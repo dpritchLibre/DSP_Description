@@ -3,18 +3,28 @@
 
 \usepackage[margin=2cm]{geometry}
 \usepackage[fleqn]{amsmath}
+\usepackage{mathtools}  %% Use for spreadlines, MoveEqLeft
+
+
+  %% User-defined commands %%
+\newcommand{\prob}{\mathbb{P}\,}
+\renewcommand{\vec}{\boldsymbol}
+\newcommand{\cbar}{\,|\,}
+\newcommand{\ind}{I}
 
 
 
+  %% Font choice Bakervald X %%
+% \usepackage{txfonts}
+% \usepackage[T1]{fontenc}
+% \usepackage[mathscr]{euscript}
+% \renewcommand{\ttdefault}{cmtt}    %% Restore default typewriter font
 
-  %% Font choice Bakervald X
-\usepackage{txfonts}
+  %% Font choice %%
+
+\usepackage[bitstream-charter]{mathdesign}
 \usepackage[T1]{fontenc}
-\usepackage[mathscr]{euscript}
-\renewcommand{\ttdefault}{cmtt}    %% Restore default typewriter font
-
-
-
+\SetMathAlphabet{\mathcal}{normal}{OMS}{cmsy}{m}{n}  %% Restore default mathcal font
 
 
 
@@ -36,6 +46,49 @@ The goal of this document is to fully characterize the Dunson day-specific proba
 \section{The model}
 
 % Consider a study where we collect
+
+
+
+\subsection{Marginal probability of conception}
+
+The marginal probability of conception, obtained by integrating out the couple-specific frailty $\xi_i$, has form as follows.
+\begin{align*} \MoveEqLeft
+\prob (Y_{ij} = 1 \cbar \vec{X}_{ij}, \vec{U}_{ij}) \\[1ex]
+&= \int_0^\infty \prob \Big( Y_{ij}, \xi_i \cbar \vec{X}_{ij}, \vec{U}_{ij} \Big)\, d\xi_i \\[1ex]
+&= \int_0^\infty \prob \Big( Y_{ij}, \xi_i \cbar \vec{X}_{ij}, \vec{U}_{ij} \Big)\, \mathcal{G}(\xi_i;\, \phi,\phi)\, d\xi_i \\[1ex]
+&= \int_0^\infty \left[ 1 - \prod_{k=1}^K (1 - \lambda_{ijk})^{X_{ijk}} \right] \mathcal{G}(\xi_i;\, \phi,\phi)\, d\xi_i \\[1ex]
+&= 1 - \int_0^\infty \prod_{k=1}^K (1 - \lambda_{ijk})^{X_{ijk}}\, \mathcal{G}(\xi_i;\, \phi,\phi)\, d\xi_i \\[1ex]
+&= 1 - \int_0^\infty \prod_{k=1}^K\, \bigg[ \exp\left\{ -\xi_i \exp\left( \vec{u}_{ijk}^\prime \vec{\beta} \right)\right\} \bigg]^{\,X_{ijk}} \mathcal{G}(\xi_i;\, \phi,\phi)\, d\xi_i \\[1ex]
+&= 1 - \int_0^\infty \prod_{k=1}^K\, \exp\bigg\{ -\xi_i X_{ijk} \exp\left( \vec{u}_{ijk}^\prime \vec{\beta} \right)\bigg\}\, \mathcal{G}(\xi_i;\, \phi,\phi)\, d\xi_i \\[1ex]
+&= 1 - \int_0^\infty \exp\left\{ -\xi_i \sum_{k=1}^K X_{ijk} \exp\left( \vec{u}_{ijk}^\prime \vec{\beta} \right)\right\} \mathcal{G}(\xi_i;\, \phi,\phi)\, d\xi_i \\
+&= 1 - \left[ \frac{ \phi }{ \phi + \sum_{k=1}^K X_{ijk} \exp\left( \vec{u}_{ijk}^\prime \vec{\beta} \right) } \right]^\phi
+\end{align*}
+since
+\begin{align*} \MoveEqLeft
+\int_0^\infty \exp\left\{ -\xi_i \sum_{k=1}^K X_{ijk} \exp\left( \vec{u}_{ijk}^\prime \vec{\beta} \right)\right\} \mathcal{G}(\xi_i;\, \phi,\phi)\, d\xi_i \\[1ex]
+&= \int_0^\infty \exp\left\{ -\xi_i \sum_{k=1}^K X_{ijk} \exp\left( \vec{u}_{ijk}^\prime \vec{\beta} \right)\right\} \frac{ \phi^\phi }{ \Gamma(\phi) }\, \xi_i^{\phi-1} d\xi_i \\[1ex]
+&= \int_0^\infty \frac{ \phi^\phi }{ \Gamma(\phi) }\, \xi_i^{\phi-1} \exp\left\{ -\xi_i \left[ \phi + \sum_{k=1}^K X_{ijk} \exp\left( \vec{u}_{ijk}^\prime \vec{\beta} \right) \right]\, \right\} d\xi_i \\[1ex]
+&= \left[ \frac{ \phi }{ \phi + \sum_{k=1}^K X_{ijk} \exp\left( \vec{u}_{ijk}^\prime \vec{\beta} \right) } \right]^\phi \int_0^\infty \frac{ \left[ \phi + \sum_{k=1}^K X_{ijk} \exp\left( \vec{u}_{ijk}^\prime \vec{\beta} \right) \right]^\phi }{ \Gamma(\phi) } \\
+& \hspace{50mm} \times \xi_i^{\phi-1} \exp \left\{ -\xi_i \left[ \phi + \sum_{k=1}^K X_{ijk} \exp\left( \vec{u}_{ijk}^\prime \vec{\beta} \right) \right]^\phi \right\} d\xi_i
+\end{align*}
+
+
+
+
+
+
+
+
+\vspace{2.54cm} \section{Posterior computation}
+
+Express the model as
+\begin{align*}
+& Y_{ij} = \ind \left( \sum_{k=1}^K W_{ijk} > 0 \right), \\[1ex]
+& W_{ijk} \stackrel{\mathit{ind}}{\sim} \left\{ \begin{array}{lll} 0, & & X_{ijk} = 0 \\[1ex]  \text{Poisson}\left( \xi_i \exp\left( \vec{u}_{ijk}^\prime \vec{\beta} \right)\right), & & \text{else} \end{array} \right.
+\end{align*}
+for $k=1,\dots,K$,
+
+
 
 
 
