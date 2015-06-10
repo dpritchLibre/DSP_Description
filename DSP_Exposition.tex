@@ -81,12 +81,19 @@ since
 
 \vspace{2.54cm} \section{Posterior computation}
 
-Express the model as
-\begin{align*}
-& Y_{ij} = \ind \left( \sum_{k=1}^K W_{ijk} > 0 \right), \\[1ex]
-& W_{ijk} \stackrel{\mathit{ind}}{\sim} \left\{ \begin{array}{lll} 0, & & X_{ijk} = 0 \\[1ex]  \text{Poisson}\left( \xi_i \exp\left( \vec{u}_{ijk}^\prime \vec{\beta} \right)\right), & & \text{else} \end{array} \right.
-\end{align*}
-for $k=1,\dots,K$,
+Express the data augmentation model as
+\begin{align} \label{eq: Data augmentation model}
+& Y_{ij} = \ind \left( \sum_{k=1}^K X_{ijk} Z_{ijk} > 0 \right), \nonumber \\[1ex]
+% & W_{ijk} \stackrel{\mathit{ind}}{\sim} \left\{ \begin{array}{lll} 0, & & X_{ijk} = 0 \\[1ex]  \text{Poisson}\left( \xi_i \exp\left( \vec{u}_{ijk}^\prime \vec{\beta} \right)\right), & & \text{else} \end{array} \right.
+& Z_{ijk} \sim \text{Poisson}\left( \xi_i \exp\left( \vec{u}_{ijk}^\prime \vec{\beta} \right)\right), \hspace{5mm}  k=1,\dots,K
+\end{align} \vspace{0mm}
+
+Let us further define $W_{ijk} = X_{ijk} Z_{ijk}$ for all $i,j,k$.
+
+
+\subsection{Verifying the equivalence of the data augmentation model}
+
+
 
 
 
