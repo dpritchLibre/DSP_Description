@@ -1,6 +1,6 @@
 # DSP_Description
 
-A repository to include writing which describes and characterizes David Dunson's day-specific probability model
+A repository to include writing that characterizes David Dunson's day-specific probabilities model
 
 ## Goal: include detailed derivations of the results found in Dunson's paper
 
