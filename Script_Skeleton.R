@@ -69,8 +69,8 @@ for (s in 1:nsims) {
 	print(paste("Gamma: ",round(gamma[1],digits=3),", ",round(gamma[2],digits=3),sep=""))
 	print(paste("Phi: ",round(phi,digits=3),sep=""))
 	print(paste("Deviance: ",round(dev,digits=3),sep=""))
+	print(paste("Acceptance Rate: Phi (",100*round(mean(acceptance_phi)/s,digits=2),"%)",sep=""))
 	print("######################################################################################################")
-
 	###Time MCMC Sampler
 	if (s==nsims) {
 		after<-Sys.time()
