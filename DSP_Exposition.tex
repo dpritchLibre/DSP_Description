@@ -6,6 +6,7 @@
 \usepackage{mathtools}  %% Use for spreadlines, MoveEqLeft
 \usepackage{bigints}  %% Use for larger integral sign
 \usepackage{enumitem}
+\usepackage{color}
 
 
   %% User-defined commands %%
@@ -19,6 +20,7 @@
 \newcommand{\barBBB}{~\Bigg|~}
 \newcommand{\ind}{I}
 \newcommand{\gammaExpr}{ -\hspace{2mm} \sum_{\mathclap{i,j,k{:}\, X_{ijk}=1}} \hspace{2mm} \xi_i \prod_{\ell=1}^q \gamma_\ell^{ u_{ijk\ell} } }
+\newcommand{\gammaExprNoH}{ -\hspace{2mm} \sum_{\mathclap{i,j,k{:}\, X_{ijk}=1}} \hspace{2mm} \xi_i \prod_{\ell \ne h} \gamma_\ell^{ u_{ijk\ell} } }
 \newcommand{\gammaExprAlt}{ -\sum_{i=1}^n \xi_i \sum_{j=1}^{n_i} \sum_{k{:}\, X_{ijk}=1} \prod_{\ell \ne h} \gamma_\ell^{ u_{ijk\ell} } }
 
   %% Font choice Bakervald X %%
@@ -35,7 +37,7 @@
 
 \allowdisplaybreaks[2]  %% Allow page breaks in align, 1-4 is least permissible to most
 
-
+\definecolor{QuestCol}{RGB}{150,0,0}  %% Define color to highlight questionable parts in
 
 
 
@@ -64,62 +66,62 @@ The goal of this document is to fully characterize the Dunson and Stanford day-s
 
 % ------------------------------------------------------------------------------
 
-\subsection{Model specification}
-We wish to model the probability of a woman becoming pregnant for a given menstrual cycle as a function of her covariate status across the days of the cycle.  Consider a study cohort and let us index
-\[ \begin{array}{lll}
-\text{woman } i, & & i = 1,\dots,n   \\[1ex]
-\text{cycle } j, & & j = 1,\dots,n_i \\[1ex]
-\text{day }   k, & & k = 1,\dots,K
-\end{array} \]
-where day $k$ refers to the $k^\text{th}$ day out of a total of $K$ days in the fertile window.  Let us write day $i,j,k$ as a shorthand for individual $i$, cycle $j$, and day $k$ and similarly for cycle $j,k$.  Then we observe that
-\begin{align*} \MoveEqLeft
-\prob\Big( \text{yes a pregnancy for cycle i,j} ~\big|~ \text{intercourse status across cycle} \Big) \\[1ex]
-&= 1 - \prob\Big( \text{not a pregnancy for cycle } i,j ~\big|~ \text{intercourse status across cycle}  \Big) \\[1ex]
-&= 1 - \prob\Big( \text{didn't become pregnant on any of days } 1,\dots,K ~\big|~ \text{intercourse status across cycle} \Big)  \\
-&= 1 - \prod_{k=1}^K\, \prob\Big( \text{didn't become pregnant on day } i,j,k ~\big|~ \text{intercourse status across cycle}, \\
-& \hspace{52mm} \text{didn't become pregnant on days 1 through $k-1$ of cycle } i,j \Big) \\
-% &= 1 - \prod_{k=1}^K\, \ind\Big( \text{had intercourse on day } i,j,k \Big)~  \prob\Big( \text{had intercourse and didn't become pregnant} \\
-% &  \hspace{30mm} \text{on day } i,j,k ~\big|~ \text{didn't become pregnant on days 1 through $k-1$ of cycle } i,j \Big) \\
-&= 1 - \prod_{k=1}^K\, \bigg\{\, 1 - \prob\Big( \text{became pregnant on day } i,j,k ~\big|~ \text{intercourse status across cycle}, \\
-& \hspace{50mm} \text{didn't become pregnant on days 1 through $k-1$ of cycle } i,j \Big)\, \bigg\} \\
-% &= 1 - \prod_{k=1}^K\, \bigg\{\, 1 - \ind\Big( \text{yes intercourse on day i,j,k} \Big)~ \prob\Big( \text{became pregnant on day } i,j,k ~\big| \\
-% & \hspace{50mm} \text{yes intercourse on day i,j,k}, \\
+% \subsection{Model specification}
+% We wish to model the probability of a woman becoming pregnant for a given menstrual cycle as a function of her covariate status across the days of the cycle.  Consider a study cohort and let us index
+% \[ \begin{array}{lll}
+% \text{woman } i, & & i = 1,\dots,n   \\[1ex]
+% \text{cycle } j, & & j = 1,\dots,n_i \\[1ex]
+% \text{day }   k, & & k = 1,\dots,K
+% \end{array} \]
+% where day $k$ refers to the $k^\text{th}$ day out of a total of $K$ days in the fertile window.  Let us write day $i,j,k$ as a shorthand for individual $i$, cycle $j$, and day $k$ and similarly for cycle $j,k$.  Then we observe that
+% \begin{align*} \MoveEqLeft
+% \prob\Big( \text{yes a pregnancy for cycle i,j} ~\big|~ \text{intercourse status across cycle} \Big) \\[1ex]
+% &= 1 - \prob\Big( \text{not a pregnancy for cycle } i,j ~\big|~ \text{intercourse status across cycle}  \Big) \\[1ex]
+% &= 1 - \prob\Big( \text{didn't become pregnant on any of days } 1,\dots,K ~\big|~ \text{intercourse status across cycle} \Big)  \\
+% &= 1 - \prod_{k=1}^K\, \prob\Big( \text{didn't become pregnant on day } i,j,k ~\big|~ \text{intercourse status across cycle}, \\
+% & \hspace{52mm} \text{didn't become pregnant on days 1 through $k-1$ of cycle } i,j \Big) \\
+% % &= 1 - \prod_{k=1}^K\, \ind\Big( \text{had intercourse on day } i,j,k \Big)~  \prob\Big( \text{had intercourse and didn't become pregnant} \\
+% % &  \hspace{30mm} \text{on day } i,j,k ~\big|~ \text{didn't become pregnant on days 1 through $k-1$ of cycle } i,j \Big) \\
+% &= 1 - \prod_{k=1}^K\, \bigg\{\, 1 - \prob\Big( \text{became pregnant on day } i,j,k ~\big|~ \text{intercourse status across cycle}, \\
 % & \hspace{50mm} \text{didn't become pregnant on days 1 through $k-1$ of cycle } i,j \Big)\, \bigg\} \\
-&= 1 - \prod_{k=1}^K\, \Bigg\{\, 1 - \ind\,\Big( \text{yes intercourse on day i,j,k} \Big) 
-\\ & \hspace{30mm} \times \prob\Big( \text{became pregnant on day } i,j,k ~\big|~ \text{yes intercourse on day i,j,k}, \\
-& \hspace{50mm} \text{didn't become pregnant on days 1 through $k-1$ of cycle } i,j \Big)\, \Bigg\} \\
-&= 1 - \prod_{k=1}^K\, \Bigg\{\, 1 - \prob\Big( \text{became pregnant on day } i,j,k ~\big|~ \text{yes intercourse on day i,j,k}, \\
-& \hspace{20mm} \text{didn't become pregnant on days 1 through $k-1$ of cycle } i,j \Big)\, \Bigg\}^{  \ind\,\big( \text{yes intercourse on day i,j,k} \big) } \\
-\end{align*} \vspace{5mm}
-
-With this result in mind, we now consider the Dunson and Stanford day-specific probabilities model.  Using the same indexing scheme as above, denote
-\[ \begin{array}{lll}
-Y_{ij} & & \text{an indicator of conception for woman $i$, cycle $j$} \\[1ex]
-X_{ijk} & & \text{an indicator of intercourse for woman $i$, cycle $j$, day $k$} \\[1ex]
-\vec{u}_{ijk} & & \text{a covariate status vector of length $q$ for  woman $i$, cycle $j$, day $k$}
-\end{array} \]
-Then writing $\vec{X}_{ij} = \big( X_{ij1}, \dots, X_{ijK} \big)$ and $\vec{U}_{ij} = \big( \vec{u}_{ijk}^\prime, \dots, \vec{u}_{ijk}^\prime \big)^\prime$, Dunson and Stanford propose the model:
-\begin{align}
-\prob\Big( Y_{ij} = 1 ~\big|~ \xi_i, \vec{X}_{ij}, \vec{U}_{ij} \Big) &= 1 - \prod_{k=1}^K\, (1 - \lambda_{ijk})^{X_{ijk}} \nonumber \\
-\lambda_{ijk} &= 1 - \exp\left\{ -\xi_i \exp\left( \vec{u}_{ijk}^\prime \vec{\beta} \right) \right\} \nonumber \\[1ex]
-\xi_i &\sim \mathcal{G}(\phi,\phi)
-\end{align}
-
-\noindent From our previous derivation, we see that we may interpret $\lambda_{ijk}$ as the day-specific probability of conception in cycle $j$ from couple $i$ given that conception has not already occured, or in the language of Dunson and Stanford, given intercourse only on day $k$.
-
-Delving further, we see that $\lambda_{ijk}$ is strictly increasing in $u_{ijkh} \beta_{h}$, where we are denoting $u_{ijkh}$ to be the $h^{\text{th}}$ term in $\vec{u}_{ijk}$ and similarly for $\beta_h$.  When $\beta_h = 0$ then the $h^{\text{th}}$ covariate has no effect on the day-specific probability of conception.
-
-$\lambda_{ijk}$ is also strictly increasing in $\xi_i$ which as Dunson and Stanford suggest may be interpreted as a woman-specific random effect.  The authors state that specifying the distribution of the $\xi_i$ with a common parameters prevents nonidentifiability between $\ev [\xi_i]$ and the day-specific parameters.  Since $\var[\xi_i] = 1 / \phi$ it follows that $\phi$ may be interpreted as a measure of variability across women. 
-
-\subsubsection{Computation consideration}
-
-As an aside, we note that it may be more computationally convenient to calculate
-\begin{align*} \MoveEqLeft
-\prob\Big( Y_{ij} = 1 ~\big|~ \xi_i, \vec{X}_{ij}, \vec{U}_{ij}  \Big) \\[1ex]
-&= 1 - \prod_{k=1}^K\, (1 - \lambda_{ijk})^{X_{ijk}} \\
-&= 1 - \prod_{k=1}^K\, \bigg[ \exp \left\{ -\xi_i \exp\left( \vec{u}_{ijk}^\prime \vec{\beta} \right) \right\} \bigg]^{\,X_{ijk}} \\
-&= 1 - \prod_{k=1}^K\, \exp \left\{ -X_{ijk} \xi_i \exp\left( \vec{u}_{ijk}^\prime \vec{\beta} \right) \right\} \\
-\end{align*}
+% % &= 1 - \prod_{k=1}^K\, \bigg\{\, 1 - \ind\Big( \text{yes intercourse on day i,j,k} \Big)~ \prob\Big( \text{became pregnant on day } i,j,k ~\big| \\
+% % & \hspace{50mm} \text{yes intercourse on day i,j,k}, \\
+% % & \hspace{50mm} \text{didn't become pregnant on days 1 through $k-1$ of cycle } i,j \Big)\, \bigg\} \\
+% &= 1 - \prod_{k=1}^K\, \Bigg\{\, 1 - \ind\,\Big( \text{yes intercourse on day i,j,k} \Big) 
+% \\ & \hspace{30mm} \times \prob\Big( \text{became pregnant on day } i,j,k ~\big|~ \text{yes intercourse on day i,j,k}, \\
+% & \hspace{50mm} \text{didn't become pregnant on days 1 through $k-1$ of cycle } i,j \Big)\, \Bigg\} \\
+% &= 1 - \prod_{k=1}^K\, \Bigg\{\, 1 - \prob\Big( \text{became pregnant on day } i,j,k ~\big|~ \text{yes intercourse on day i,j,k}, \\
+% & \hspace{20mm} \text{didn't become pregnant on days 1 through $k-1$ of cycle } i,j \Big)\, \Bigg\}^{  \ind\,\big( \text{yes intercourse on day i,j,k} \big) } \\
+% \end{align*} \vspace{5mm}
+% 
+% With this result in mind, we now consider the Dunson and Stanford day-specific probabilities model.  Using the same indexing scheme as above, denote
+% \[ \begin{array}{lll}
+% Y_{ij} & & \text{an indicator of conception for woman $i$, cycle $j$} \\[1ex]
+% X_{ijk} & & \text{an indicator of intercourse for woman $i$, cycle $j$, day $k$} \\[1ex]
+% \vec{u}_{ijk} & & \text{a covariate status vector of length $q$ for  woman $i$, cycle $j$, day $k$}
+% \end{array} \]
+% Then writing $\vec{X}_{ij} = \big( X_{ij1}, \dots, X_{ijK} \big)$ and $\vec{U}_{ij} = \big( \vec{u}_{ijk}^\prime, \dots, \vec{u}_{ijk}^\prime \big)^\prime$, Dunson and Stanford propose the model:
+% \begin{align}
+% \prob\Big( Y_{ij} = 1 ~\big|~ \xi_i, \vec{X}_{ij}, \vec{U}_{ij} \Big) &= 1 - \prod_{k=1}^K\, (1 - \lambda_{ijk})^{X_{ijk}} \nonumber \\
+% \lambda_{ijk} &= 1 - \exp\left\{ -\xi_i \exp\left( \vec{u}_{ijk}^\prime \vec{\beta} \right) \right\} \nonumber \\[1ex]
+% \xi_i &\sim \mathcal{G}(\phi,\phi)
+% \end{align}
+% 
+% \noindent From our previous derivation, we see that we may interpret $\lambda_{ijk}$ as the day-specific probability of conception in cycle $j$ from couple $i$ given that conception has not already occured, or in the language of Dunson and Stanford, given intercourse only on day $k$.
+% 
+% Delving further, we see that $\lambda_{ijk}$ is strictly increasing in $u_{ijkh} \beta_{h}$, where we are denoting $u_{ijkh}$ to be the $h^{\text{th}}$ term in $\vec{u}_{ijk}$ and similarly for $\beta_h$.  When $\beta_h = 0$ then the $h^{\text{th}}$ covariate has no effect on the day-specific probability of conception.
+% 
+% $\lambda_{ijk}$ is also strictly increasing in $\xi_i$ which as Dunson and Stanford suggest may be interpreted as a woman-specific random effect.  The authors state that specifying the distribution of the $\xi_i$ with a common parameters prevents nonidentifiability between $\ev [\xi_i]$ and the day-specific parameters.  Since $\var[\xi_i] = 1 / \phi$ it follows that $\phi$ may be interpreted as a measure of variability across women. 
+% 
+% \subsubsection{Computation consideration}
+% 
+% As an aside, we note that it may be more computationally convenient to calculate
+% \begin{align*} \MoveEqLeft
+% \prob\Big( Y_{ij} = 1 ~\big|~ \xi_i, \vec{X}_{ij}, \vec{U}_{ij}  \Big) \\[1ex]
+% &= 1 - \prod_{k=1}^K\, (1 - \lambda_{ijk})^{X_{ijk}} \\
+% &= 1 - \prod_{k=1}^K\, \bigg[ \exp \left\{ -\xi_i \exp\left( \vec{u}_{ijk}^\prime \vec{\beta} \right) \right\} \bigg]^{\,X_{ijk}} \\
+% &= 1 - \prod_{k=1}^K\, \exp \left\{ -X_{ijk} \xi_i \exp\left( \vec{u}_{ijk}^\prime \vec{\beta} \right) \right\} \\
+% \end{align*}
 
 
 
@@ -127,7 +129,7 @@ As an aside, we note that it may be more computationally convenient to calculate
 
 % ------------------------------------------------------------------------------
 
-\subsection{Model specification Version 2}
+\subsection{Model specification}
 We wish to model the probability of a woman becoming pregnant for a given menstrual cycle as a function of her covariate status across the days of the cycle.  Consider a study cohort and let us index
 \[ \begin{array}{lll}
 \text{woman } i, & & i = 1,\dots,n   \\[1ex]
@@ -266,16 +268,11 @@ Need to do \vspace{2.54cm}
 
 \subsection{The full conditional distributions}
 
-\begin{enumerate}[label=Step \arabic*., leftmargin=13mm]
-\item Writing $\vec{W}_{ij} = \big( W_{ij1},\dots,W_{ijK} \big)$ and $\vec{m} = \big(m_1,\dots,m_K\big)$, we see first that
+\begin{enumerate}[label=Step \arabic*., leftmargin=13mm, itemsep=2.54cm]
+\item Writing $\vec{W}_{ij} = \big( W_{ij1},\dots,W_{ijK} \big)$ and letting $\vec{m} = \big(m_1,\dots,m_K\big)$ be a vector of outcomes for $\vec{W}_{ij}$, we see first that for $Y_{ij} = 0$ we have
 \[ \prob\Big( \vec{W}_{ij} = \vec{m} \barM Y_{ij} = 0,\, \vec{\beta}, \phi, \vec{\xi}, \text{data} \Big) ~=~ \left\{ \begin{array}{lll} 1, & & \vec{m} = \vec{0} \\[1ex] 0, & & \text{else} \end{array} \right.  \]
 
-Next,
-% \begin{align*} \MoveEqLeft
-% \pi\,\Big( \vec{W}_{ij} \barM Y_{ij} = 1,\, \vec{\beta}, \phi, \vec{\xi}, \text{data} \Big) \\[1ex] 
-% &=~ \pi\,\left( \vec{W}_{ij} \barBBB \sum_{k=1}^K W_{ijk},~  Y_{ij} = 1,\, \vec{\beta}, \phi, \vec{\xi}, \text{data} \right)~ \pi\,\left( \sum_{k=1}^K W_{ijk} \barBBB Y_{ij} = 1,\, \vec{\beta}, \phi, \vec{\xi}, \text{data} \right)
-% \end{align*}
-
+Next, for $Y_{ij} = 1$ we have
 \begin{align*} \MoveEqLeft
 \prob\Big( \vec{W}_{ij} = \vec{m} \barM Y_{ij} = 1,\, \vec{\beta}, \phi, \vec{\xi}, \text{data} \Big) \\
 &= \sum_{s=0}^\infty \prob\bigg( \vec{W}_{ij} = \vec{m},~ \textstyle \sum_{k} W_{ijk} = s \barB Y_{ij} = 1,\, \vec{\beta}, \phi, \vec{\xi}, \text{data} \bigg) \\[1ex]
@@ -303,10 +300,10 @@ and
 
 \item Define the following terms which will be of use in the following derivation.  Denote
 \[ \begin{array}{lll}
-\widetilde{a}_h & & **** \\[1ex]
-\widetilde{b}_h & & **** \\[1ex]
-c_1 & \hspace{5mm} & p_h \exp\left\{ -(\widetilde{b}_h - b_h) \right\} \\[1ex]
-c_2 &  & \displaystyle (1 - p_h)\, \frac{ C(a_h,b_h) \int_{\mathcal{A}_h} \mathcal{G}(\gamma;\, \widetilde{a}_h, \widetilde{b}_h)\, d\gamma }{ C(\widetilde{a}_h, \widetilde{b}_h) \int_{\mathcal{A}_h} \mathcal{G}(\gamma;\, a_h, b_h)\, d\gamma } \\[1ex]
+\widetilde{a}_h & & a_h + \sum_{i,j,k} u_{ijkh} W_{ijk} \\[2ex]
+\widetilde{b}_h & & \displaystyle b_h +\hspace{2mm} \sum_{\mathclap{i,j,k{:}\, X_{ijk}=1}} \hspace{2mm} \xi_i \prod_{\ell \ne h} \gamma_\ell^{ u_{ijk\ell} } \\[4ex]
+c_1 & \hspace{5mm} & p_h \exp\left\{ -(\widetilde{b}_h - b_h) \right\} \\[2ex]
+c_2 &  & \displaystyle (1 - p_h)\, \frac{ C(a_h,b_h) \int_{\mathcal{A}_h} \mathcal{G}(\gamma;\, \widetilde{a}_h, \widetilde{b}_h)\, d\gamma }{ C(\widetilde{a}_h, \widetilde{b}_h) \int_{\mathcal{A}_h} \mathcal{G}(\gamma;\, a_h, b_h)\, d\gamma } \\[2ex]
 \widetilde{p}_h & & \displaystyle \frac{ c_1 }{ c_1 + c_2 }
 \end{array} \]
 
@@ -333,16 +330,16 @@ Then
 \pi\, \big( \gamma_h \barS \vec{\gamma}_{(-h)}, \phi, \vec{\xi}, \vec{W}, \text{data} \big) \\[1ex]
 & \propto \pi\, \big( \vec{W} \barS\, \vec{\xi}, \gamma, \text{data} \big)\, \pi\,\big( \gamma_h \big) \\[1ex]
 &= \left( \prod_{i=1}^{n} \prod_{j=1}^{n_i} \prod_{k{:}\, X_{ijk} = 1} \pi\, \big( W_{ijk} \barS \vec{\xi}_i, \gamma, \text{data} \big) \right) \pi\, \big( \gamma_h \big) \\
-&\propto \left( \prod_{i=1}^{n} \prod_{j=1}^{n_i} \prod_{k{:}\, X_{ijk} = 1} \Big[ \exp\big( u_{ijkh} \log \gamma_h \big) \Big]^{W_{ijk}} \exp\left\{ \xi_i \exp\left( \sum_{\ell=1}^q u_{ijk\ell} \log \gamma_{\ell} \right) \right\} \right) \pi\, \big( \gamma_h \big) \\
+&\propto \left( \prod_{i=1}^{n} \prod_{j=1}^{n_i} \prod_{k{:}\, X_{ijk} = 1} \Big[ \exp\big( u_{ijkh} \log \gamma_h \big) \Big]^{W_{ijk}} \exp\left\{ -\xi_i \exp\left( \sum_{\ell=1}^q u_{ijk\ell} \log \gamma_{\ell} \right) \right\} \right) \pi\, \big( \gamma_h \big) \\
 &= \left( \prod_{i=1}^{n} \prod_{j=1}^{n_i} \prod_{k{:}\, X_{ijk} = 1} \gamma_h^{ u_{ijkh} W_{ijk} } \exp\left\{ -\xi_i \prod_{\ell=1}^q \gamma_\ell^{ u_{ijk\ell} } \right\} \right) \pi\, \big( \gamma_h \big) \\
 &= \gamma_h^{ \sum_{i,j,k} u_{ijkh} W_{ijk} } \exp\left\{ \gammaExpr \right\} \pi\, \big( \gamma_h \big) \\
 &= \gamma_h^{ \sum_{i,j,k} u_{ijkh} W_{ijk} } \exp\left\{ \gammaExpr \right\} \\[1ex]
 & \hspace{40mm} \times~ \bigg[ p_h \ind\big( \gamma_h = 1 \big) ~+~ (1 - p_h)\, \ind\big( \gamma_h \ne 1 \big)\, \mathcal{G}_{\mathcal{A}_h} (\gamma_h;\, a_h,b_h) \bigg] \\
-&= p_h\, \ind\big( \gamma_h = 1 \big)\, \exp\left\{ \gammaExpr \right\} \\
+&= p_h\, \ind\big( \gamma_h = 1 \big)\, \exp\left\{ \gammaExprNoH \right\} \\
 & \hspace{10mm} +~ (1 - p_h)\, \ind\big(\gamma_h \ne 1 \big)\, \gamma_h^{ \sum_{i,j,k} u_{ijkh} W_{ijk} } \exp\left\{ \gammaExpr \right\} \, \mathcal{G}_{\mathcal{A}_h} (\gamma_h;\, a_h,b_h) \\
-&= p_h\, \ind\big( \gamma_h = 1 \big)\, \exp\left\{ \gammaExpr \right\} \\[1ex]
-& \hspace{30mm} +~ (1 - p_h)\, \ind\big(\gamma_h \ne 1 \big)\, \frac{ C(a_h,b_h) }{ \int_{\mathcal{A}_h} \mathcal{G}(\gamma;\, a_h,b_h)\, d\gamma }\, \gamma_h^{ a_h + \sum_{i,j,k} u_{ijkh} W_{ijk} - 1 } \\
-& \hspace{30mm} \times~ \exp\left\{ -\gamma_h \left[ b_h +\hspace{2mm} \sum_{\mathclap{i,j,k{:}\, X_{ijk}=1}} \hspace{2mm} \xi_i \prod_{\ell=1}^q \gamma_\ell^{ u_{ijk\ell} } \right] \right\} \\[2ex]
+&= \color{QuestCol} p_h\, \ind\big( \gamma_h = 1 \big)\, \exp\left\{ \gammaExprNoH \right\} \\[1ex]
+& \color{QuestCol} \hspace{30mm} +~ (1 - p_h)\, \ind\big(\gamma_h \ne 1 \big)\, \frac{ C(a_h,b_h) }{ \int_{\mathcal{A}_h} \mathcal{G}(\gamma;\, a_h,b_h)\, d\gamma }\, \gamma_h^{ a_h + \sum_{i,j,k} u_{ijkh} W_{ijk} - 1 } \\
+& \color{QuestCol} \hspace{30mm} \times~ \exp\left\{ -\gamma_h \left[ b_h +\hspace{2mm} \sum_{\mathclap{i,j,k{:}\, X_{ijk}=1}} \hspace{2mm} \xi_i \prod_{\ell \ne h} \gamma_\ell^{ u_{ijk\ell} } \right] \right\} \\[2ex]
 &= p_h\, \ind\big( \gamma_h = 1 \big)\, \exp\left\{ -(\widetilde{b}_h - b_h) \right\} \,+~ (1 - p_h)\, \ind\big( \gamma_h \ne 1 \big)\, \frac{ C(a_h,b_h) }{ \int_{\mathcal{A}_h} \mathcal{G}(\gamma;\, a_h,b_h)\, d\gamma }\, \gamma_h^{ \widetilde{a}_h - 1 }\, \exp\left\{ -\widetilde{b}_h \gamma_h \right\} \\[2ex]
 &= p_h\, \ind\big( \gamma_h = 1 \big)\, \exp\left\{ -(\widetilde{b}_h - b_h) \right\} \,+~ (1 - p_h)\, \ind\big( \gamma_h \ne 1 \big) \\
 & \hspace{30mm} \times~ \frac{ C(a_h,b_h) \int_{\mathcal{A}_h} \mathcal{G}(\gamma;\, \widetilde{a}_h, \widetilde{b}_h)\, d\gamma }{ C(\widetilde{a}_h, \widetilde{b}_h) \int_{\mathcal{A}_h} \mathcal{G}(\gamma;\, a_h, b_h)\, d\gamma }\, \frac{ C( \widetilde{a}_h, \widetilde{b}_h) }{ \int_{\mathcal{A}_h} \mathcal{G}(\gamma;\, \widetilde{a}_h, \widetilde{b}_h)\, d\gamma } \gamma_h^{ \widetilde{a}_h - 1 }\, \exp\left\{ -\widetilde{b}_h \gamma_h \right\} \\[2ex]
