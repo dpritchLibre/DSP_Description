@@ -406,6 +406,24 @@ r &= \frac{ \pi\, \big( \phi^* \barS \vec{W}, \vec{\beta}, \vec{\xi}, \text{data
 \begin{enumerate}[label=(\roman*), itemsep=10mm]
 \item \textbf{Sampling from a truncated gamma distribution}
 
+Consider a set $(a,b)$ and let $X$ be a continuous random variable with support $\mathcal{A}$ such that $(a,b) \subset \mathcal{A}$.  Define
+\[ \begin{array}{lll}
+F_X & & \text{the distribution function of $X$} \\[1ex]
+U\,(d_1,d_2) & & \text{a uniform random variable with support on $(d_1,d_2)$} \\[1ex]
+V & & \text{a random variable defined by $V = F_X^{-1}\Big( U\big( F_X(a), F_X(b) \big) \Big)$}
+\end{array} \]
+Then
+\begin{align*} \MoveEqLeft
+\prob(V \leq v) = \prob \bigg\{ F_X^{-1}\Big( U\big( F_X(a), F_X(b) \big) \Big) \leq v \bigg\} \\[1ex]
+&= \prob \bigg\{ U\big( F_X(a), F_X(b) \big) \leq F_X(v) \bigg\} \\[1ex]
+&= \left\{ \begin{array}{lll}
+0, & & v \leq F_X(a) \\[1ex]
+\displaystyle \frac{ F_X(v) - F_X(a) }{ F_X(b) - F_X(a) }, & & F_X(a) < v < F_X(b) \\[2ex]
+1, & & F_X(b) \leq v
+\end{array} \right. \end{align*}
+which is the distribution function of $X$ truncated to $(a,b)$.  Thus we may sample from a truncated gamma distribution by sampling $u = U\big( F_X(a), F_X(b) \big)$ and then calculating $F_X^{-1}(u)$.
+
+
 \item \textbf{Sampling from a truncated Poisson distribution}
 
 \item \textbf{Calculating } $\displaystyle \boldsymbol{\frac{d_1}{d_1 + d_2}}$
