@@ -365,7 +365,7 @@ d_2 &  & \displaystyle (1 - p_h)\, \exp\left\{ -\gammaExprUisZero \right\}\, \fr
 \widetilde{p}_h & & \displaystyle \frac{ d_1 }{ d_1 + d_2 }
 \end{array} \] \vspace{2mm}
 
-Then
+Then for the case when the explanetory variables are all categorical, we have
 \begin{align*} \MoveEqLeft
 \pi\, \big( \gamma_h \barS \vec{\gamma}_{(-h)}, \phi, \vec{\xi}, \vec{W}, \text{data} \big) \\[2ex]
 & \propto \pi\, \big( \vec{W} \barS\, \vec{\xi}, \gamma, \text{data} \big)~ \pi\,\big( \gamma_h \big) \\[1ex]
@@ -422,16 +422,18 @@ Then
 
 Now,
 \begin{align*} \MoveEqLeft
-\pi\, \big( \phi \barS \vec{W}, \vec{\beta}, \vec{\xi}, \text{data} \big) \\[1ex]
-&= \frac{ \pi\,\big( \vec{W}, \vec{\beta}, \vec{\xi}, \phi, \text{data} \big) }{ \pi\,\big( \vec{W}, \vec{\beta}, \vec{\xi}, \text{data} \big) } \\[1ex]
-&= \pi\,\big( \vec{\xi} \barS \phi \big)~ \pi\,(\phi)~ \frac{ \pi\,\big( \vec{W}, \vec{\beta} \barS \vec{\xi}, \text{data} \big) }{ \pi\,\big( \vec{W}, \vec{\beta}, \vec{\xi}, \text{data} \big) } \\[1ex]
-&= \left( \prod_{i=1}^n \pi\,\big( \xi_i \barS \phi \big) \right) \pi\,(\phi)~ \frac{ \pi\,\big( \vec{W}, \vec{\beta} \barS \vec{\xi}, \text{data} \big) }{ \pi\,\big( \vec{W}, \vec{\beta}, \vec{\xi}, \text{data} \big) }
+\pi\, \big( \phi \barS \vec{Y}, \vec{W}, \vec{\beta}, \vec{\xi}, \text{data} \big) \\[1ex]
+&= \frac{ \pi\,\big( \vec{Y}, \vec{W}, \vec{\beta}, \vec{\xi}, \phi, \text{data} \big) }{ \pi\,\big( \vec{Y}, \vec{W}, \vec{\beta}, \vec{\xi}, \text{data} \big) } \\[1ex]
+&= \frac{ 1 }{ \pi\,\big( \vec{Y}, \vec{W}, \vec{\beta}, \vec{\xi}, \text{data} \big) }\, \pi\,\big( \vec{Y} \barS \vec{W}, \vec{\beta}, \vec{\xi}, \phi, \text{data} \big)~ \pi\,\big( \vec{W} \barS \vec{\beta}, \vec{\xi}, \phi, \text{data} \big)\\
+& \hspace{70mm} \times~ \pi\,\big( \vec{\xi} \barS \phi, \text{data} \big)~ \pi\,(\phi \barS \text{data}) \\[1ex]
+&= \frac{ 1 }{ \pi\,\big( \vec{Y}, \vec{W}, \vec{\beta}, \vec{\xi}, \text{data} \big) }\, \pi\,\big( \vec{Y} \barS \vec{W} \big)~ \pi\,\big( \vec{W} \barS \vec{\beta}, \vec{\xi}, \text{data} \big)~ \pi\,\big( \vec{\xi} \barS \phi \big)~ \pi\,(\phi) \\[1ex]
+&= \left( \prod_{i=1}^n \pi\,\big( \xi_i \barS \phi \big) \right) \pi\,(\phi)~ \frac{ \pi\,\big( \vec{Y} \barS \vec{W} \big)~ \pi\,\big( \vec{W} \barS \vec{\beta}, \vec{\xi}, \text{data} \big) }{ \pi\,\big( \vec{Y}, \vec{W}, \vec{\beta}, \vec{\xi}, \text{data} \big) }
 \end{align*}
 
 
 It follows that the acceptance ratio is given by $\min(r,1)$ where
 \begin{align*}
-r &= \frac{ \pi\, \big( \phi^* \barS \vec{W}, \vec{\beta}, \vec{\xi}, \text{data} \big) }{ \pi\, \big( \phi^{(s)} \barS \vec{W}, \vec{\beta}, \vec{\xi}, \text{data} \big) } = \frac{ \bigg( \prod_{i=1}^n \pi\,\big( \xi_i \barS \phi^* \big) \bigg)\, \pi\,(\phi^*) }{ \bigg( \prod_{i=1}^n \pi\,\big( \xi_i \barS \phi^{(s)} \big) \bigg)\, \pi\,(\phi^{(s)}) }
+r &= \frac{ \pi\, \big( \phi^* \barS \vec{Y}, \vec{W}, \vec{\beta}, \vec{\xi}, \text{data} \big) }{ \pi\, \big( \phi^{(s)} \barS \vec{Y}, \vec{W}, \vec{\beta}, \vec{\xi}, \text{data} \big) } = \frac{ \bigg( \prod_{i=1}^n \pi\,\big( \xi_i \barS \phi^* \big) \bigg)\, \pi\,(\phi^*) }{ \bigg( \prod_{i=1}^n \pi\,\big( \xi_i \barS \phi^{(s)} \big) \bigg)\, \pi\,(\phi^{(s)}) }
 \end{align*}
 
 \end{enumerate}
