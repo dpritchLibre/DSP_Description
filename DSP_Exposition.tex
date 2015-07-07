@@ -22,9 +22,10 @@
 \newcommand{\ind}{I}
 %\newcommand{\cdotB}{ \scalebox{1}{$\ldot$} }
 \newcommand{\cdotB}{\raisebox{-0.5ex}{\scalebox{1.75}{$\cdot$}}}
-\newcommand{\gammaExpr}{ -\hspace{2mm} \sum_{\mathclap{i,j,k{:}\, X_{ijk}=1}} \hspace{2mm} \xi_i \prod_{\ell=1}^q \gamma_\ell^{ u_{ijk\ell} } }
-\newcommand{\gammaExprNoH}{ -\hspace{2mm} \sum_{\mathclap{i,j,k{:}\, X_{ijk}=1}} \hspace{2mm} \xi_i \prod_{\ell \ne h} \gamma_\ell^{ u_{ijk\ell} } }
-\newcommand{\gammaExprAlt}{ -\sum_{i=1}^n \xi_i \sum_{j=1}^{n_i} \sum_{k{:}\, X_{ijk}=1} \prod_{\ell \ne h} \gamma_\ell^{ u_{ijk\ell} } }
+\newcommand{\gammaExpr}{ -\hspace{3mm} \sum_{\mathclap{i,j,k{:}\, X_{ijk}=1}} \hspace{4mm} \xi_i \prod_{\ell=1}^q \gamma_\ell^{ u_{ijk\ell} } }
+\newcommand{\gammaExprNoH}{ -\hspace{3mm} \sum_{\mathclap{i,j,k{:}\, X_{ijk}=1}} \hspace{4mm} \xi_i \prod_{\ell \ne h} \gamma_\ell^{ u_{ijk\ell} } }
+\newcommand{\gammaExprUisZero}{ \hspace{3mm} \sum_{\mathclap{\substack{i,j,k{:}\, X_{ijk}=1, \\ u_{ijkh} = 0}}} \hspace{4mm} \xi_i \prod_{\ell \ne h} \gamma_\ell^{ u_{ijk\ell} } }
+\newcommand{\gammaExprUisOne}{ \hspace{3mm} \sum_{\mathclap{\substack{i,j,k{:}\, X_{ijk}=1, \\ u_{ijkh} = 1}}} \hspace{4mm} \xi_i \prod_{\ell \ne h} \gamma_\ell^{ u_{ijk\ell} } }
 
   %% Font choice Bakervald X %%
 % \usepackage{txfonts}
@@ -347,7 +348,46 @@ Then
 &= d_1 \ind\big( \gamma_h = 1 \big) ~+~ d_2 \ind\big( \gamma_h \ne 1 \big)\, \mathcal{G}_{\mathcal{A}_h} (\gamma;\, \widetilde{a}_h, \widetilde{b}_h) \\[2ex]
 &\propto \frac{ d_1 }{ d_1 + d_2 } \ind\big( \gamma_h = 1 \big) ~+~ \frac{ d_2 }{ d_1 + d_2 } \ind\big( \gamma_h \ne 1 \big)\, \mathcal{G}_{\mathcal{A}_h} (\gamma;\, \widetilde{a}_h, \widetilde{b}_h) \\[2ex]
 &= \widetilde{p}_h \ind\big( \gamma_h = 1 \big) ~+~ (1 - \widetilde{p}_h)\, \ind\big( \gamma_h \ne 1 \big)\, \mathcal{G}_{\mathcal{A}_h} (\gamma;\, \widetilde{a}_h, \widetilde{b}_h) \\
+\end{align*} \vspace{15mm}
+
+
+
+
+%-------------------------------------------------------------------------------
+
+\textbf{Version 2} \\[2ex]
+Define the following terms which will be of use in the following derivation.  Denote \vspace{2mm}
+\[ \begin{array}{lll}
+\widetilde{a}_h & & a_h + \sum_{i,j,k} u_{ijkh} W_{ijk} \\[4ex]
+\widetilde{b}_h & & \displaystyle b_h + \gammaExprUisOne  \\[4ex]
+d_1 & \hspace{5mm} & \displaystyle p_h\, \ind\big( \gamma_h = 1 \big)\, \exp\left\{ \gammaExprNoH \right\} \\[4ex]
+d_2 &  & \displaystyle (1 - p_h)\, \exp\left\{ -\gammaExprUisZero \right\}\, \frac{ C(a_h,b_h) \int_{\mathcal{A}_h} \mathcal{G}\big(\gamma;\, \widetilde{a}_h, \widetilde{b}_h\big)\, d\gamma }{ C\big(\widetilde{a}_h, \widetilde{b}_h\big) \int_{\mathcal{A}_h} \mathcal{G}(\gamma;\, a_h, b_h)\, d\gamma } \\[4ex]
+\widetilde{p}_h & & \displaystyle \frac{ d_1 }{ d_1 + d_2 }
+\end{array} \] \vspace{2mm}
+
+Then
+\begin{align*} \MoveEqLeft
+\pi\, \big( \gamma_h \barS \vec{\gamma}_{(-h)}, \phi, \vec{\xi}, \vec{W}, \text{data} \big) \\[2ex]
+& \propto \pi\, \big( \vec{W} \barS\, \vec{\xi}, \gamma, \text{data} \big)~ \pi\,\big( \gamma_h \big) \\[1ex]
+&= \left( \prod_{i=1}^{n} \prod_{j=1}^{n_i} \prod_{k{:}\, X_{ijk} = 1} \pi\, \big( W_{ijk} \barS \vec{\xi}_i, \gamma, \text{data} \big) \right)\, \pi\,\big( \gamma_h \big) \\
+&\propto \left( \prod_{i=1}^{n} \prod_{j=1}^{n_i} \prod_{k{:}\, X_{ijk} = 1} \Big[ \exp\big( u_{ijkh} \log \gamma_h \big) \Big]^{W_{ijk}} \exp\left\{ -\xi_i \exp\left( \sum_{\ell=1}^q u_{ijk\ell} \log \gamma_{\ell} \right) \right\} \right)\, \pi\,\big( \gamma_h \big) \\
+&= \left( \prod_{i=1}^{n} \prod_{j=1}^{n_i} \prod_{k{:}\, X_{ijk} = 1} \gamma_h^{ u_{ijkh} W_{ijk} } \exp\left\{ -\xi_i \prod_{\ell=1}^q \gamma_\ell^{ u_{ijk\ell} } \right\} \right)\, \pi\,\big( \gamma_h \big) \\
+&= \gamma_h^{ \sum_{i,j,k} u_{ijkh} W_{ijk} } \exp\left\{ \gammaExpr \right\}\, \pi\,\big( \gamma_h \big) \\
+&= \gamma_h^{ \sum_{i,j,k} u_{ijkh} W_{ijk} } \exp\left\{ \gammaExpr \right\} \\[1ex]
+& \hspace{40mm} \times~ \bigg[ p_h \ind\big( \gamma_h = 1 \big) ~+~ (1 - p_h)\, \ind\big( \gamma_h \ne 1 \big)\, \mathcal{G}_{\!\mathcal{A}_h} (\gamma_h;\, a_h,b_h) \bigg] \\
+&= p_h\, \ind\big( \gamma_h = 1 \big)\, \exp\left\{ \gammaExprNoH \right\} \\
+& \hspace{10mm} +~ (1 - p_h)\, \ind\big(\gamma_h \ne 1 \big)\, \gamma_h^{ \sum_{i,j,k} u_{ijkh} W_{ijk} } \exp\left\{ \gammaExpr \right\} \, \mathcal{G}_{\!\mathcal{A}_h} (\gamma_h;\, a_h,b_h) \\
+&= p_h\, \ind\big( \gamma_h = 1 \big)\, \exp\left\{ \gammaExprNoH \right\} \\
+& \hspace{10mm} +~ (1 - p_h)\, \ind\big(\gamma_h \ne 1 \big)\, \gamma_h^{ \sum_{i,j,k} u_{ijkh} W_{ijk} } \\
+& \hspace{20mm} \times~ \exp\left\{ -\gammaExprUisZero \right\}\, \exp\left\{ -\gamma_h \gammaExprUisOne \right\} \mathcal{G}_{\!\mathcal{A}_h} (\gamma_h;\, a_h,b_h) \\
+&= p_h\, \ind\big( \gamma_h = 1 \big)\, \exp\left\{ \gammaExprNoH \right\} \\
+& \hspace{30mm} +~ (1 - p_h)\, \ind\big(\gamma_h \ne 1 \big)\, \exp\left\{ -\gammaExprUisZero \right\}\, \frac{ C(a_h, b_h) }{ \int_{\mathcal{A}_h} \mathcal{G}(\gamma;\, a_h,b_h)\, d\gamma } \\
+& \hspace{40mm} \times~ \gamma_h^{ \alpha_h + \sum_{i,j,k} u_{ijkh} W_{ijk} - 1 }\exp\left\{ -\gamma_h \left[ b_h + \gammaExprUisOne \right]\right\}  \\[2ex]
+&= d_1\, \ind\big( \gamma_h = 1 \big) + d_2\, \ind\big( \gamma_h \ne 1 \big)~ \mathcal{G}_{\!\mathcal{A}_h} \big(\gamma_h;\, \widetilde{a}_h, \widetilde{b}_h\big) \\[2ex]
+&= \frac{ d_1 }{ d_1 + d_2 }\, \ind\big( \gamma_h = 1 \big) + \frac{ d_2 }{ d_1 + d_2 }\, \ind\big( \gamma_h \ne 1 \big)~ \mathcal{G}_{\!\mathcal{A}_h} \big(\gamma_h;\, \widetilde{a}_h, \widetilde{b}_h\big) \\[2ex]
+&= \widetilde{p}_h\, \ind\big( \gamma_h = 1 \big) + \big(1 - \widetilde{p}_h\big)\, \ind\big( \gamma_h \ne 1 \big)~ \mathcal{G}_{\!\mathcal{A}_h} \big(\gamma_h;\, \widetilde{a}_h, \widetilde{b}_h\big)
 \end{align*}
+
 
 
 
@@ -421,7 +461,7 @@ Then
 \displaystyle \frac{ F_X(v) - F_X(a) }{ F_X(b) - F_X(a) }, & & F_X(a) < v < F_X(b) \\[2ex]
 1, & & F_X(b) \leq v
 \end{array} \right. \end{align*}
-which is the distribution function of $X$ truncated to $(a,b)$.  Thus we may sample from a truncated gamma distribution by sampling $u = U\big( F_X(a), F_X(b) \big)$ and then calculating $F_X^{-1}(u)$.
+which is the distribution function of $X$ truncated to $(a,b)$.  Thus by choosing $F_X$ to be the distribution function of some desired gamma distribution, we may sample from the truncated gamma distribution by sampling $u = U\big( F_X(a), F_X(b) \big)$ and then calculating $F_X^{-1}(u)$. 
 
 
 \item \textbf{Sampling from a truncated Poisson distribution}
@@ -433,12 +473,22 @@ which is the distribution function of $X$ truncated to $(a,b)$.  Thus we may sam
 \end{enumerate}
 
 
+\[ \frac{ C(a_h,b_h) }{ \int_{\mathcal{A}_h} \mathcal{G}(\gamma; a_h, b_h) d\gamma } \gamma_h^{a_h-1} \exp( -\gamma_h b_h ) \]
+
+
 
 
 %===============================================================================
 
 \section{Posterior inference}
 
+
+% \[ \exp\left\{ \gammaExpr \right\} \exp\{-\gamma_h b_h\} = \exp\left\{ -\gamma_h \left[ b_h + \hspace{2mm} \sum_{\mathclap{i,j,k{:}\, X_{ijk}=1}} \hspace{2mm} \xi_i\, \gamma_h^{u_{ijk\ell}-1} \prod_{\ell \ne h} \gamma_\ell^{ u_{ijk\ell} } \right] \right\} \]
+% while we are looking for
+% \[ \exp\left\{ -\gamma_h \left[ b_h +\hspace{2mm} \sum_{\mathclap{i,j,k{:}\, X_{ijk}=1}} \hspace{2mm} \xi_i \prod_{\ell \ne h} \gamma_\ell^{ u_{ijk\ell} } \right] \right\} \]
+
+
+% -\hspace{2mm} \sum_{\mathclap{i,j,k{:}\, X_{ijk}=1}} \hspace{2mm} \xi_i \prod_{\ell=1}^q \gamma_\ell^{ u_{ijk\ell} } }
 \end{document}
 
 
