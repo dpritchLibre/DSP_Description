@@ -205,10 +205,10 @@ Typical constraints for the $\gamma_h$ are $\mathbb{R}^+,\, (0,1)$, and $(1,\inf
 
 Consider a model where the list of covariates includes an ordered categorical variable with types $1,\dots,t$.  Let $\vec{s}_{ijk} = \big( s_{ijk,2}, \dots, s_{ijk,t} \big)$ be a vector of length $(t-1)$ for each day $i,j,k$ where
 \[ \arraycolsep=2pt \begin{array}{ccl}
-s_{ijk,2} & = & I\Big(\, \text{categorical variable for day $i$, cycle $j$, day $k$ is type 2} \,\Big) \\[1ex]
-s_{ijk,3} & = & I\Big(\, \text{categorical variable for day $i$, cycle $j$, day $k$ is type 2 or 3} \,\Big) \\[1ex]
+s_{ijk,2} & = & I\,\Big(\, \text{categorical variable for day $i,j,k$ is type 2} \,\Big) \\[1ex]
+s_{ijk,3} & = & I\,\Big(\, \text{categorical variable for day $i,j,k$ is type 2 or 3} \,\Big) \\[1ex]
 \vdots & \vdots & \hspace{45mm} \vdots \\
-s_{ijk,t} & = & I\Big(\, \text{categorical variable for day $i$, cycle $j$, day $k$ is type 2 or 3 or \dots or $t$} \,\Big)
+s_{ijk,t} & = & I\,\Big(\, \text{categorical variable for day $i,j,k$ is type 2 or 3 or \dots or $t$} \,\Big)
 \end{array} \]
 Next, let us partition each covariate vector $\vec{u}_{ijk} = \big(\vec{r}_{ijk},\,  \vec{s}_{ijk}\big)$ so that $\vec{r}_{ijk}$ is a vector of the remaining covariate terms.  Furthermore let $\vec{\beta} = \big( \vec{\tau},\, \vec{\alpha} \big)$ be the corresponding partition of covariate coefficients where $\vec{\alpha} = \big(\alpha_2,\dots,\alpha_t\big)$.  Then for person $i$, cycle $j$, and day $k$ with categorical variable type $d$ where $d \in \{1,\dots,t\}$, then
 \begin{align*}
@@ -400,7 +400,6 @@ Then for the case when the explanetory variables are all categorical, we have
 \pi\, \Big( \vec{\xi}_i \barM \vec{\beta}, \phi, \vec{W}, \text{data} \Big) \\[2ex]
 &\propto \pi\,\Big( \vec{W}_i \barM \xi_i,\, \beta, \text{data} \Big)~ \pi\, \big( \xi_i \barS \phi, \text{data} \big) \\[1ex]
 &= \left( \prod_{j,k{:}\, X_{ijk}=1} \pi\,\Big( \vec{W}_{ijk} \barM \xi_i,\, \beta, \text{data} \Big) \right) \pi\, \big( \xi_i \barS \phi, \text{data} \big) \\[1ex]
-%&\propto \left( \prod_{j,k{:}\, X_{ijk}=1} \bigg[ \xi_i \exp\left( \vec{u}_{ijk}^\prime \vec{\beta} \right) \bigg]^{\,W_{ijk}} \exp\bigg\{ -\xi_i \exp\left( \vec{u}_{ijk}^\prime \vec{\beta} \right) \bigg\} \right) \xi_i^{\phi - 1} \exp\big\{ -\phi \xi_i \big\} \\[1ex]
 &\propto \left( \prod_{j,k{:}\, X_{ijk}=1} \xi_i^{W_{ijk}} \exp\bigg\{ -\xi_i \exp\left( \vec{u}_{ijk}^\prime \vec{\beta} \right) \bigg\} \right)\, \xi_i^{\phi - 1} \exp\big\{ -\phi \xi_i \big\} \\[1ex]
 &= \left( \xi_i^{\sum_{j,k{:}\, X_{ijk}=1} W_{ijk}} \exp\Bigg\{ -\xi_i \hspace{2mm} \sum_{\mathclap{ j,k{:}\, X_{ijk}=1 }} \hspace{2mm} \exp\left( \vec{u}_{ijk}^\prime \vec{\beta} \right) \Bigg\} \right)\, \xi_i^{\phi - 1} \exp\big\{ -\phi \xi_i \big\} \\[1ex]
 &= \xi_i^{ \phi + \sum_{j,k{:}\, X_{ijk}=1} W_{ijk} - 1 } \exp\left\{ -\xi_i\, \Bigg[ \phi + \hspace{2mm} \sum_{\mathclap{ j,k{:}\, X_{ijk}=1 }} \exp\left( \vec{u}_{ijk}^\prime \vec{\beta} \right) \Bigg] \right\} \\
@@ -416,9 +415,10 @@ Then for the case when the explanetory variables are all categorical, we have
 \item Sampling $\phi$ can be achieved via the Metropolis algorithms.  Let $\phi^{(s)}$ denote the value of $\phi$ for the $s^{\text{th}}$ scan of the MCMC algorithm, and let $\phi^*$ denote a proposed value of $\phi$ for the $(s+1)^{\text{th}}$ scan of the algorithm.  We consider the following two proposal distributions where $\delta$ is a tuning parameter with value greater than 0. \vspace{2mm}
 
 \begin{enumerate}[label=(\roman*), itemsep=3mm]
-\item $ J\left( \phi^* \barS \phi^{(s)} \right) \sim N\left( \phi^{(s)}, \delta^2 \right) \text{ truncated so that $\phi^* > 0$} $
-\item $ J\left( \phi^* \barS \phi^{(s)} \right) \sim \text{Uniform}\, \Big( \max\left(0, \phi^{(s)} - \delta\right),~ \phi^{(s)} + \delta \Big) $
+\item $ J\left( \phi^* \barS \phi^{(s)} \right) \sim \left|\, N\left( \phi^{(s)}, \delta^2 \right) \,\right| $
+\item $ J\left( \phi^* \barS \phi^{(s)} \right) \sim \left|\, \text{Uniform}\, \big( \phi^{(s)} - \delta,~ \phi^{(s)} + \delta \big) \,\right| $
 \end{enumerate} \vspace{6mm}
+
 
 Now,
 \begin{align*} \MoveEqLeft
@@ -437,6 +437,67 @@ r &= \frac{ \pi\, \big( \phi^* \barS \vec{Y}, \vec{W}, \vec{\beta}, \vec{\xi}, \
 \end{align*}
 
 \end{enumerate}
+
+
+
+
+%-------------------------------------------------------------------------------
+
+\subsubsection{Symmetric distributions verfication}
+
+Recall the proposal distributions from Step 4 of the MCMC algorithm:
+\begin{enumerate}[label=(\roman*), itemsep=3mm]
+\item $ J\left( \phi^* \barS \phi^{(s)} \right) \sim \left|\, N\left( \phi^{(s)}, \delta^2 \right) \,\right| $
+\item $ J\left( \phi^* \barS \phi^{(s)} \right) \sim \left|\, \text{Uniform}\, \big( \phi^{(s)} - \delta,~ \phi^{(s)} + \delta \big) \,\right| $
+\end{enumerate}
+
+\vspace{4mm} \begin{center} \rule{1.0\textwidth}{0.25mm} \end{center} \vspace{4mm}
+
+
+\noindent To see that (i) is indeed a symmetric distribution, consider the following.  Let $X \sim \text{Normal}\, (\mu,\delta^2)$, and let $Y = |X|$.  Define
+\[ \arraycolsep=5mm \begin{array}{lll}
+A_0 = \{0\}       & & \\[1ex]
+A_1 = (-\infty,0) & g_1(x) = -x & g_1^{-1}(x) = -x \\[1ex]
+A_2 = (0, \infty) &  g_2(x) = x & g_2^{-1}(x) = x
+\end{array} \]
+Then
+\begin{align*}
+\pi_Y(y) &= \sum_{i=1}^2 f_X\left( g_i^{-1}(y) \right) \left| \frac{ d }{ d\,y } g_i^{-1}(y) \,\right| \\[1ex]
+&= \frac{ 1 }{ \sqrt{ 2\pi\delta^2 } }\, \exp\left\{ - \frac{ 1 }{ \delta^2 }\, (-y - \mu)^2 \right\} | -1 \,| + \frac{ 1 }{ \sqrt{ 2\pi\delta^2 } }\, \exp\left\{ - \frac{ 1 }{ \delta^2 }\, (y - \mu)^2 \right\} |\, 1 \,|
+\end{align*} \vspace{4mm}
+
+\noindent Letting $\pi_J \left( x | y \right)$ denote the density function of (i), it follows that 
+\begin{align*}
+\pi_J \left( \phi^* \barS \phi^{(s)} \right) &= \frac{ 1 }{ \sqrt{ 2\pi\delta^2 } }\, \exp\left\{ - \frac{ 1 }{ \delta^2 } \left(-\phi^* - \phi^{(s)}\right)^2 \right\} + \frac{ 1 }{ \sqrt{ 2\pi\delta^2 } }\, \exp\left\{ - \frac{ 1 }{ \delta^2 } \left(\phi^* - \phi^{(s)}\right)^2 \right\}
+\end{align*}
+and that
+\begin{align*}
+\pi_J \left( \phi^{(s)} \barS \phi^* \right) &= \frac{ 1 }{ \sqrt{ 2\pi\delta^2 } }\, \exp\left\{ - \frac{ 1 }{ \delta^2 } \left(-\phi^{(s)} - \phi^*\right)^2 \right\} + \frac{ 1 }{ \sqrt{ 2\pi\delta^2 } }\, \exp\left\{ - \frac{ 1 }{ \delta^2 } \left(\phi^{(s)} - \phi^*\right)^2 \right\}
+\end{align*}
+which are readily seen to be equivalent.
+
+\vspace{4mm} \begin{center} \rule{1.0\textwidth}{0.25mm} \end{center} \vspace{4mm}
+\noindent To see that (ii) is indeed a symmetric distribution, consider the following.  Let $X \sim \text{Uniform}\, (a,b)$, and let $Y = |X|$.  Then for $a < y < b$,
+\begin{align*}
+F_Y(y) &= \prob(Y \leq y) \\[1ex]
+&= \prob(|X| \leq y) \\[1ex]
+&= \prob(-y \leq X \leq y) \\[1ex]
+&= F_X(y) - F_X(-y) \\[1ex]
+&= \frac{ y-a }{ b-a } - \frac{ -y-a }{ b-a }\, \ind\,(a < -y)
+\end{align*}
+so that
+\[ \pi_Y(y) = \frac{ 1 }{ b-a } + \frac{ 1 }{ b - a }\, \ind\,(a < -y)  \] \vspace{4mm}
+
+\noindent Letting $\pi_J \left( x | y \right)$ denote the density function of (ii), it follows that 
+\begin{align*}
+\pi_J \left( \phi^* \barS \phi^{(s)} \right) &= \frac{ 1 }{ (\phi^{(s)} + \delta) - (\phi^{(s)} - \delta) } + \frac{ 1 }{ (\phi^{(s)} + \delta) - (\phi^{(s)} - \delta) }\, \ind\,(\phi^{(s)} - \delta < -\phi^*)  \\[1ex]
+&= \frac{ 1 }{ 2\delta } + \frac{ 1 }{ 2\delta }\, \ind\big(\phi^{(s)} - \delta < -\phi^{*}\big)
+\end{align*}
+and similarly that
+\begin{align*} \pi_J \left( \phi^{(s)} \barS \phi^{*} \right) &= \frac{ 1 }{ (\phi^{(s)} + \delta) - (\phi^{(s)} - \delta) } + \frac{ 1 }{ (\phi^{(s)} + \delta) - (\phi^{(s)} - \delta) }\, \ind\,(\phi^{*} - \delta < -\phi^{(s)}\big) \\[1ex]
+&= \frac{ 1 }{ 2\delta } + \frac{ 1 }{ 2\delta }\, \ind\big(\phi^{*} - \delta < -\phi^{(s)}\big)
+\end{align*}
+which after rearranging terms are seen to be equivalent.
 
 
 
