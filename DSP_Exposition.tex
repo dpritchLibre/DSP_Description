@@ -496,7 +496,7 @@ Recall the proposal distributions from Step 4 of the MCMC algorithm:
 \[ \arraycolsep=5mm \begin{array}{lll}
 A_0 = \{0\}       & & \\[1ex]
 A_1 = (-\infty,0) & g_1(x) = -x & g_1^{-1}(x) = -x \\[1ex]
-A_2 = (0, \infty) &  g_2(x) = x & g_2^{-1}(x) = x
+A_2 = (0, \infty) &  g_2(x) =x & g_2^{-1}(x) = x
 \end{array} \]
 Then
 \begin{align*}
@@ -526,12 +526,12 @@ F_Y(y) &= \prob(Y \leq y) \\[1ex]
 so that
 \[ \pi_Y(y) = \frac{ 1 }{ b-a } + \frac{ 1 }{ b - a }\, \ind\,(a < -y)  \] \vspace{4mm}
 
-\noindent Letting $\pi_{J\text{(ii)}} \left( x | y \right)$ denote the density function of (ii), it follows that 
+\noindent Letting $\pi_{J\text{(ii)}} \left( x | y \right)$ denote the density function of (ii), it follows that for $\phi^{(s)} < \phi^* < \phi^{(s)}$,
 \begin{align*}
 \pi_{J\text{(ii)}} \left( \phi^* \barS \phi^{(s)} \right) &= \frac{ 1 }{ (\phi^{(s)} + \delta) - (\phi^{(s)} - \delta) } + \frac{ 1 }{ (\phi^{(s)} + \delta) - (\phi^{(s)} - \delta) }\, \ind\,(\phi^{(s)} - \delta < -\phi^*)  \\[1ex]
 &= \frac{ 1 }{ 2\delta } + \frac{ 1 }{ 2\delta }\, \ind\big(\phi^{(s)} - \delta < -\phi^{*}\big)
 \end{align*}
-and similarly that
+and similarly that for $\phi^{*} < \phi^{(s)} < \phi^{*}$,
 \begin{align*} \pi_{J\text{(ii)}} \left( \phi^{(s)} \barS \phi^{*} \right) &= \frac{ 1 }{ (\phi^{*} + \delta) - (\phi^{*} - \delta) } + \frac{ 1 }{ (\phi^{*} + \delta) - (\phi^{*} - \delta) }\, \ind\,(\phi^{*} - \delta < -\phi^{(s)}\big) \\[1ex]
 &= \frac{ 1 }{ 2\delta } + \frac{ 1 }{ 2\delta }\, \ind\big(\phi^{*} - \delta < -\phi^{(s)}\big)
 \end{align*}
@@ -574,7 +574,6 @@ which is the distribution function of $X$ truncated to $(a,b)$.  Thus by choosin
 \end{enumerate}
 
 
-\[ \frac{ C(a_h,b_h) }{ \int_{\mathcal{A}_h} \mathcal{G}(\gamma; a_h, b_h) d\gamma } \gamma_h^{a_h-1} \exp( -\gamma_h b_h ) \]
 
 
 
