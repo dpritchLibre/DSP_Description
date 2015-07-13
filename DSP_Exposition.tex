@@ -504,13 +504,13 @@ Then
 &= \frac{ 1 }{ \sqrt{ 2\pi\delta^2 } }\, \exp\left\{ - \frac{ 1 }{ \delta^2 }\, (-y - \mu)^2 \right\} | -1 \,| + \frac{ 1 }{ \sqrt{ 2\pi\delta^2 } }\, \exp\left\{ - \frac{ 1 }{ \delta^2 }\, (y - \mu)^2 \right\} |\, 1 \,|
 \end{align*} \vspace{4mm}
 
-\noindent Letting $\pi_J \left( x | y \right)$ denote the density function of (i), it follows that 
+\noindent Letting $\pi_{J\text{(i)}} \left( x | y \right)$ denote the density function of (i), it follows that 
 \begin{align*}
-\pi_J \left( \phi^* \barS \phi^{(s)} \right) &= \frac{ 1 }{ \sqrt{ 2\pi\delta^2 } }\, \exp\left\{ - \frac{ 1 }{ \delta^2 } \left(-\phi^* - \phi^{(s)}\right)^2 \right\} + \frac{ 1 }{ \sqrt{ 2\pi\delta^2 } }\, \exp\left\{ - \frac{ 1 }{ \delta^2 } \left(\phi^* - \phi^{(s)}\right)^2 \right\}
+\pi_{J\text{(i)}} \left( \phi^* \barS \phi^{(s)} \right) &= \frac{ 1 }{ \sqrt{ 2\pi\delta^2 } }\, \exp\left\{ - \frac{ 1 }{ \delta^2 } \left(-\phi^* - \phi^{(s)}\right)^2 \right\} + \frac{ 1 }{ \sqrt{ 2\pi\delta^2 } }\, \exp\left\{ - \frac{ 1 }{ \delta^2 } \left(\phi^* - \phi^{(s)}\right)^2 \right\}
 \end{align*}
 and that
 \begin{align*}
-\pi_J \left( \phi^{(s)} \barS \phi^* \right) &= \frac{ 1 }{ \sqrt{ 2\pi\delta^2 } }\, \exp\left\{ - \frac{ 1 }{ \delta^2 } \left(-\phi^{(s)} - \phi^*\right)^2 \right\} + \frac{ 1 }{ \sqrt{ 2\pi\delta^2 } }\, \exp\left\{ - \frac{ 1 }{ \delta^2 } \left(\phi^{(s)} - \phi^*\right)^2 \right\}
+\pi_{J\text{(i)}} \left( \phi^{(s)} \barS \phi^* \right) &= \frac{ 1 }{ \sqrt{ 2\pi\delta^2 } }\, \exp\left\{ - \frac{ 1 }{ \delta^2 } \left(-\phi^{(s)} - \phi^*\right)^2 \right\} + \frac{ 1 }{ \sqrt{ 2\pi\delta^2 } }\, \exp\left\{ - \frac{ 1 }{ \delta^2 } \left(\phi^{(s)} - \phi^*\right)^2 \right\}
 \end{align*}
 which are readily seen to be equivalent.
 
@@ -526,13 +526,13 @@ F_Y(y) &= \prob(Y \leq y) \\[1ex]
 so that
 \[ \pi_Y(y) = \frac{ 1 }{ b-a } + \frac{ 1 }{ b - a }\, \ind\,(a < -y)  \] \vspace{4mm}
 
-\noindent Letting $\pi_J \left( x | y \right)$ denote the density function of (ii), it follows that 
+\noindent Letting $\pi_{J\text{(ii)}} \left( x | y \right)$ denote the density function of (ii), it follows that 
 \begin{align*}
-\pi_J \left( \phi^* \barS \phi^{(s)} \right) &= \frac{ 1 }{ (\phi^{(s)} + \delta) - (\phi^{(s)} - \delta) } + \frac{ 1 }{ (\phi^{(s)} + \delta) - (\phi^{(s)} - \delta) }\, \ind\,(\phi^{(s)} - \delta < -\phi^*)  \\[1ex]
+\pi_{J\text{(ii)}} \left( \phi^* \barS \phi^{(s)} \right) &= \frac{ 1 }{ (\phi^{(s)} + \delta) - (\phi^{(s)} - \delta) } + \frac{ 1 }{ (\phi^{(s)} + \delta) - (\phi^{(s)} - \delta) }\, \ind\,(\phi^{(s)} - \delta < -\phi^*)  \\[1ex]
 &= \frac{ 1 }{ 2\delta } + \frac{ 1 }{ 2\delta }\, \ind\big(\phi^{(s)} - \delta < -\phi^{*}\big)
 \end{align*}
 and similarly that
-\begin{align*} \pi_J \left( \phi^{(s)} \barS \phi^{*} \right) &= \frac{ 1 }{ (\phi^{(s)} + \delta) - (\phi^{(s)} - \delta) } + \frac{ 1 }{ (\phi^{(s)} + \delta) - (\phi^{(s)} - \delta) }\, \ind\,(\phi^{*} - \delta < -\phi^{(s)}\big) \\[1ex]
+\begin{align*} \pi_{J\text{(ii)}} \left( \phi^{(s)} \barS \phi^{*} \right) &= \frac{ 1 }{ (\phi^{*} + \delta) - (\phi^{*} - \delta) } + \frac{ 1 }{ (\phi^{*} + \delta) - (\phi^{*} - \delta) }\, \ind\,(\phi^{*} - \delta < -\phi^{(s)}\big) \\[1ex]
 &= \frac{ 1 }{ 2\delta } + \frac{ 1 }{ 2\delta }\, \ind\big(\phi^{*} - \delta < -\phi^{(s)}\big)
 \end{align*}
 which after rearranging terms are seen to be equivalent.
