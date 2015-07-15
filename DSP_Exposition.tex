@@ -431,17 +431,19 @@ d_2 &  & \displaystyle (1 - p_h)\, \frac{ C(a_h,b_h) \int_{\mathcal{A}_h} \mathc
 \end{align*} 
 
 
+
+
 %-------------------------------------------------------------------------------
 
 \item 
 \begin{align*} \MoveEqLeft
 \pi\, \Big( \vec{\xi}_i \barM \vec{\beta}, \phi, \vec{W}, \text{data} \Big) \\[2ex]
-&\propto \pi\,\Big( \vec{W}_i \barM \xi_i,\, \beta, \text{data} \Big)~ \pi\, \big( \xi_i \barS \phi, \text{data} \big) \\[1ex]
-&= \left( \prod_{j,k{:}\, X_{ijk}=1} \pi\,\Big( \vec{W}_{ijk} \barM \xi_i,\, \beta, \text{data} \Big) \right) \pi\, \big( \xi_i \barS \phi, \text{data} \big) \\[1ex]
+&\propto \pi\,\Big( \vec{W}_i \barM \vec{\beta}, \xi_i, \text{data} \Big)~ \pi\, \big( \xi_i \barS \phi, \text{data} \big) \\[1ex]
+&= \left( \prod_{j,k{:}\, X_{ijk}=1} \pi\,\Big( \vec{W}_{ijk} \barM \vec{\beta}, \xi_i, \text{data} \Big) \right) \pi\, \big( \xi_i \barS \phi, \text{data} \big) \\[1ex]
 &\propto \left( \prod_{j,k{:}\, X_{ijk}=1} \xi_i^{W_{ijk}} \exp\bigg\{ -\xi_i \exp\left( \vec{u}_{ijk}^\prime \vec{\beta} \right) \bigg\} \right)\, \xi_i^{\phi - 1} \exp\big\{ -\phi \xi_i \big\} \\[1ex]
-&= \left( \xi_i^{\sum_{j,k{:}\, X_{ijk}=1} W_{ijk}} \exp\Bigg\{ -\xi_i \hspace{2mm} \sum_{\mathclap{ j,k{:}\, X_{ijk}=1 }} \hspace{2mm} \exp\left( \vec{u}_{ijk}^\prime \vec{\beta} \right) \Bigg\} \right)\, \xi_i^{\phi - 1} \exp\big\{ -\phi \xi_i \big\} \\[1ex]
-&= \xi_i^{ \phi + \sum_{j,k{:}\, X_{ijk}=1} W_{ijk} - 1 } \exp\left\{ -\xi_i\, \Bigg[ \phi + \hspace{2mm} \sum_{\mathclap{ j,k{:}\, X_{ijk}=1 }} \exp\left( \vec{u}_{ijk}^\prime \vec{\beta} \right) \Bigg] \right\} \\
-& \sim \text{Gamma}\,\left(\xi_i; \hspace{3mm} \phi + \hspace{1mm} \sum_{\mathclap{ j,k{:}\, X_{ijk}=1 }} \hspace{2mm} W_{ijk}, \hspace{6mm} \sum_{\mathclap{ j,k{:}\, X_{ijk}=1 }}\hspace{2mm} \exp\left( \vec{u}_{ijk}^\prime \vec{\beta} \right) \right)
+&= \left( \xi_i^{\sum_{j,k} W_{ijk}} \exp\Bigg\{ -\xi_i \hspace{2mm} \sum_{\mathclap{ j,k{:}\, X_{ijk}=1 }} \hspace{2mm} \exp\left( \vec{u}_{ijk}^\prime \vec{\beta} \right) \Bigg\} \right)\, \xi_i^{\phi - 1} \exp\big\{ -\phi \xi_i \big\} \\[1ex]
+&= \xi_i^{ \phi + \sum_{j,k} W_{ijk} - 1 } \exp\left\{ -\xi_i\, \Bigg[ \phi + \hspace{2mm} \sum_{\mathclap{ j,k{:}\, X_{ijk}=1 }} \exp\left( \vec{u}_{ijk}^\prime \vec{\beta} \right) \Bigg] \right\} \\
+& \sim \text{Gamma}\,\left(\phi + \hspace{1mm} \sum_{j,k} W_{ijk}, \hspace{6mm} \sum_{\mathclap{ j,k{:}\, X_{ijk}=1 }}\hspace{2mm} \exp\left( \vec{u}_{ijk}^\prime \vec{\beta} \right) \right)
 \end{align*}
 
 
@@ -583,12 +585,6 @@ which is the distribution function of $X$ truncated to $(a,b)$.  Thus by choosin
 \section{Posterior inference}
 
 
-% \[ \exp\left\{ \gammaExpr \right\} \exp\{-\gamma_h b_h\} = \exp\left\{ -\gamma_h \left[ b_h + \hspace{2mm} \sum_{\mathclap{i,j,k{:}\, X_{ijk}=1}} \hspace{2mm} \xi_i\, \gamma_h^{u_{ijk\ell}-1} \prod_{\ell \ne h} \gamma_\ell^{ u_{ijk\ell} } \right] \right\} \]
-% while we are looking for
-% \[ \exp\left\{ -\gamma_h \left[ b_h +\hspace{2mm} \sum_{\mathclap{i,j,k{:}\, X_{ijk}=1}} \hspace{2mm} \xi_i \prod_{\ell \ne h} \gamma_\ell^{ u_{ijk\ell} } \right] \right\} \]
-
-
-% -\hspace{2mm} \sum_{\mathclap{i,j,k{:}\, X_{ijk}=1}} \hspace{2mm} \xi_i \prod_{\ell=1}^q \gamma_\ell^{ u_{ijk\ell} } }
 \end{document}
 
 
