@@ -349,87 +349,7 @@ Then
 &= d_1 \ind\big( \gamma_h = 1 \big) ~+~ d_2 \ind\big( \gamma_h \ne 1 \big)\, \mathcal{G}_{\mathcal{A}_h} (\gamma;\, \widetilde{a}_h, \widetilde{b}_h) \\[2ex]
 &\propto \frac{ d_1 }{ d_1 + d_2 } \ind\big( \gamma_h = 1 \big) ~+~ \frac{ d_2 }{ d_1 + d_2 } \ind\big( \gamma_h \ne 1 \big)\, \mathcal{G}_{\mathcal{A}_h} (\gamma;\, \widetilde{a}_h, \widetilde{b}_h) \\[2ex]
 &= \widetilde{p}_h \ind\big( \gamma_h = 1 \big) ~+~ (1 - \widetilde{p}_h)\, \ind\big( \gamma_h \ne 1 \big)\, \mathcal{G}_{\mathcal{A}_h} (\gamma;\, \widetilde{a}_h, \widetilde{b}_h) \\
-\end{align*} \vspace{15mm}
-
-
-
-%-------------------------------------------------------------------------------
-
-\textbf{Version 2} \\[2ex]
-Define the following terms which will be of use in the following derivation.  Denote \vspace{2mm}
-\[ \begin{array}{lll}
-\widetilde{a}_h & & a_h + \sum_{i,j,k} u_{ijkh} W_{ijk} \\[4ex]
-\widetilde{b}_h & & \displaystyle b_h + \gammaExprUisOne  \\[4ex]
-d_1 & \hspace{5mm} & \displaystyle p_h\, \ind\big( \gamma_h = 1 \big)\, \exp\left\{ \gammaExprNoH \right\} \\[4ex]
-d_2 &  & \displaystyle (1 - p_h)\, \exp\left\{ -\gammaExprUisZero \right\}\, \frac{ C(a_h,b_h) \int_{\mathcal{A}_h} \mathcal{G}\big(\gamma;\, \widetilde{a}_h, \widetilde{b}_h\big)\, d\gamma }{ C\big(\widetilde{a}_h, \widetilde{b}_h\big) \int_{\mathcal{A}_h} \mathcal{G}(\gamma;\, a_h, b_h)\, d\gamma } \\[4ex]
-\widetilde{p}_h & & \displaystyle \frac{ d_1 }{ d_1 + d_2 }
-\end{array} \] \vspace{2mm}
-
-Then for the case when the explanetory variables are all categorical, we have
-\begin{align*} \MoveEqLeft
-\pi\, \big( \gamma_h \barS \vec{\gamma}_{(-h)}, \phi, \vec{\xi}, \vec{W}, \text{data} \big) \\[2ex]
-& \propto \pi\, \big( \vec{W} \barS\, \vec{\xi}, \gamma, \text{data} \big)~ \pi\,\big( \gamma_h \big) \\[1ex]
-&= \left( \prod_{i=1}^{n} \prod_{j=1}^{n_i} \prod_{k{:}\, X_{ijk} = 1} \pi\, \big( W_{ijk} \barS \vec{\xi}_i, \gamma, \text{data} \big) \right)\, \pi\,\big( \gamma_h \big) \\
-&\propto \left( \prod_{i=1}^{n} \prod_{j=1}^{n_i} \prod_{k{:}\, X_{ijk} = 1} \Big[ \exp\big( u_{ijkh} \log \gamma_h \big) \Big]^{W_{ijk}} \exp\left\{ -\xi_i \exp\left( \sum_{\ell=1}^q u_{ijk\ell} \log \gamma_{\ell} \right) \right\} \right)\, \pi\,\big( \gamma_h \big) \\
-&= \left( \prod_{i=1}^{n} \prod_{j=1}^{n_i} \prod_{k{:}\, X_{ijk} = 1} \gamma_h^{ u_{ijkh} W_{ijk} } \exp\left\{ -\xi_i \prod_{\ell=1}^q \gamma_\ell^{ u_{ijk\ell} } \right\} \right)\, \pi\,\big( \gamma_h \big) \\
-&= \gamma_h^{ \sum_{i,j,k} u_{ijkh} W_{ijk} } \exp\left\{ \gammaExpr \right\}\, \pi\,\big( \gamma_h \big) \\
-&= \gamma_h^{ \sum_{i,j,k} u_{ijkh} W_{ijk} } \exp\left\{ \gammaExpr \right\} \\[1ex]
-& \hspace{40mm} \times~ \bigg[ p_h \ind\big( \gamma_h = 1 \big) ~+~ (1 - p_h)\, \ind\big( \gamma_h \ne 1 \big)\, \mathcal{G}_{\!\mathcal{A}_h} (\gamma_h;\, a_h,b_h) \bigg] \\
-&= p_h\, \ind\big( \gamma_h = 1 \big)\, \exp\left\{ \gammaExprNoH \right\} \\
-& \hspace{10mm} +~ (1 - p_h)\, \ind\big(\gamma_h \ne 1 \big)\, \gamma_h^{ \sum_{i,j,k} u_{ijkh} W_{ijk} } \exp\left\{ \gammaExpr \right\} \, \mathcal{G}_{\!\mathcal{A}_h} (\gamma_h;\, a_h,b_h) \\
-&= p_h\, \ind\big( \gamma_h = 1 \big)\, \exp\left\{ \gammaExprNoH \right\} \\
-& \hspace{10mm} +~ (1 - p_h)\, \ind\big(\gamma_h \ne 1 \big)\, \gamma_h^{ \sum_{i,j,k} u_{ijkh} W_{ijk} } \\
-& \hspace{20mm} \times~ \exp\left\{ -\gammaExprUisZero \right\}\, \exp\left\{ -\gamma_h \gammaExprUisOne \right\} \mathcal{G}_{\!\mathcal{A}_h} (\gamma_h;\, a_h,b_h) \\
-&= p_h\, \ind\big( \gamma_h = 1 \big)\, \exp\left\{ \gammaExprNoH \right\} \\
-& \hspace{30mm} +~ (1 - p_h)\, \ind\big(\gamma_h \ne 1 \big)\, \exp\left\{ -\gammaExprUisZero \right\}\, \frac{ C(a_h, b_h) }{ \int_{\mathcal{A}_h} \mathcal{G}(\gamma;\, a_h,b_h)\, d\gamma } \\
-& \hspace{40mm} \times~ \gamma_h^{ \alpha_h + \sum_{i,j,k} u_{ijkh} W_{ijk} - 1 }\exp\left\{ -\gamma_h \left[ b_h + \gammaExprUisOne \right]\right\}  \\[2ex]
-&= d_1\, \ind\big( \gamma_h = 1 \big) + d_2\, \ind\big( \gamma_h \ne 1 \big)~ \mathcal{G}_{\!\mathcal{A}_h} \big(\gamma_h;\, \widetilde{a}_h, \widetilde{b}_h\big) \\[2ex]
-&= \frac{ d_1 }{ d_1 + d_2 }\, \ind\big( \gamma_h = 1 \big) + \frac{ d_2 }{ d_1 + d_2 }\, \ind\big( \gamma_h \ne 1 \big)~ \mathcal{G}_{\!\mathcal{A}_h} \big(\gamma_h;\, \widetilde{a}_h, \widetilde{b}_h\big) \\[2ex]
-&= \widetilde{p}_h\, \ind\big( \gamma_h = 1 \big) + \big(1 - \widetilde{p}_h\big)\, \ind\big( \gamma_h \ne 1 \big)~ \mathcal{G}_{\!\mathcal{A}_h} \big(\gamma_h;\, \widetilde{a}_h, \widetilde{b}_h\big)
-\end{align*} \vspace{15mm}
-
-
-
-%-------------------------------------------------------------------------------
-
-
-\textbf{Version 3 (Sam's Version)} \\[2ex]
-Define the following terms which will be of use in the following derivation.  Denote
-\[ \begin{array}{lll}
-\widetilde{a}_h & & a_h + \sum_{i,j,k} u_{ijkh} W_{ijk} \\[2ex]
-\widetilde{b}_h & & \displaystyle b_h + \gammaExprUisOne \\[4ex]
-d_1 & \hspace{5mm} & p_h \exp\left\{ -(\widetilde{b}_h - b_h) \right\} \\[2ex]
-d_2 &  & \displaystyle (1 - p_h)\, \frac{ C(a_h,b_h) \int_{\mathcal{A}_h} \mathcal{G}(\gamma;\, \widetilde{a}_h, \widetilde{b}_h)\, d\gamma }{ C(\widetilde{a}_h, \widetilde{b}_h) \int_{\mathcal{A}_h} \mathcal{G}(\gamma;\, a_h, b_h)\, d\gamma } \\[2ex]
-\widetilde{p}_h & & \displaystyle \frac{ d_1 }{ d_1 + d_2 }
-\end{array} \]
-
-\begin{align*} \MoveEqLeft
-\pi\, \big( \gamma_h \barS \vec{\gamma}_{(-h)}, \phi, \vec{\xi}, \vec{W}, \text{data} \big) \\[2ex]
-& \propto \pi\, \big( \vec{W} \barS\, \vec{\xi}, \gamma, \text{data} \big)\, \pi\,\big( \gamma_h \big) \\[1ex]
-&= \left( \prod_{i=1}^{n} \prod_{j=1}^{n_i} \prod_{k{:}\, X_{ijk} = 1} \pi\, \big( W_{ijk} \barS \vec{\xi}_i, \gamma, \text{data} \big) \right) \pi\, \big( \gamma_h \big) \\
-&\propto \left( \prod_{i=1}^{n} \prod_{j=1}^{n_i} \prod_{k{:}\, X_{ijk} = 1} \Big[ \exp\big( u_{ijkh} \log \gamma_h \big) \Big]^{W_{ijk}} \exp\left\{ -\xi_i \exp\left( \sum_{\ell=1}^q u_{ijk\ell} \log \gamma_{\ell} \right) \right\} \right) \pi\, \big( \gamma_h \big) \\
-&= \left( \prod_{i=1}^{n} \prod_{j=1}^{n_i} \prod_{k{:}\, X_{ijk} = 1} \gamma_h^{ u_{ijkh} W_{ijk} } \exp\left\{ -\xi_i \prod_{\ell=1}^q \gamma_\ell^{ u_{ijk\ell} } \right\} \right) \pi\, \big( \gamma_h \big) \\
-&= \gamma_h^{ \sum_{i,j,k} u_{ijkh} W_{ijk} } \exp\left\{ \gammaExpr \right\} \pi\, \big( \gamma_h \big) \\
-&= \gamma_h^{ \sum_{i,j,k} u_{ijkh} W_{ijk} } \exp\left\{ \gammaExpr \right\} \\[1ex]
-& \hspace{40mm} \times~ \bigg[ p_h \ind\big( \gamma_h = 1 \big) ~+~ (1 - p_h)\, \ind\big( \gamma_h \ne 1 \big)\, \mathcal{G}_{\mathcal{A}_h} (\gamma_h;\, a_h,b_h) \bigg] \\
-&= \gamma_h^{ \sum_{i,j,k} u_{ijkh} W_{ijk} } \exp\left\{ -\gammaExprUisZero-\gamma_h\gammaExprUisOne \right\} \\[1ex]
-& \hspace{40mm} \times~ \bigg[ p_h \ind\big( \gamma_h = 1 \big) ~+~ (1 - p_h)\, \ind\big( \gamma_h \ne 1 \big)\, \mathcal{G}_{\mathcal{A}_h} (\gamma_h;\, a_h,b_h) \bigg] \\
-&\propto \gamma_h^{ \sum_{i,j,k} u_{ijkh} W_{ijk} } \exp\left\{-\gamma_h\gammaExprUisOne \right\} \\[1ex]
-& \hspace{40mm} \times~ \bigg[ p_h \ind\big( \gamma_h = 1 \big) ~+~ (1 - p_h)\, \ind\big( \gamma_h \ne 1 \big)\, \mathcal{G}_{\mathcal{A}_h} (\gamma_h;\, a_h,b_h) \bigg] \\
-&= p_h\, \ind\big( \gamma_h = 1 \big)\, \exp\left\{ -\gammaExprUisOne \right\} \\
-& \hspace{10mm} +~ (1 - p_h)\, \ind\big(\gamma_h \ne 1 \big)\, \gamma_h^{ \sum_{i,j,k} u_{ijkh} W_{ijk} } \exp\left\{ -\gamma_h\gammaExprUisOne \right\} \, \mathcal{G}_{\mathcal{A}_h} (\gamma_h;\, a_h,b_h) \\
-&= p_h\, \ind\big( \gamma_h = 1 \big)\, \exp\left\{ -\gammaExprUisOne \right\} \\[1ex]
-& \hspace{30mm} +~ (1 - p_h)\, \ind\big(\gamma_h \ne 1 \big)\, \frac{ C(a_h,b_h) }{ \int_{\mathcal{A}_h} \mathcal{G}(\gamma;\, a_h,b_h)\, d\gamma }\, \gamma_h^{ a_h + \sum_{i,j,k} u_{ijkh} W_{ijk} - 1 } \\
-& \hspace{30mm} \times~ \exp\left\{ -\gamma_h \left[ b_h + \gammaExprUisOne  \right] \right\} \\[2ex]
-&= p_h\, \ind\big( \gamma_h = 1 \big)\, \exp\left\{ -(\widetilde{b}_h - b_h) \right\} \,+~ (1 - p_h)\, \ind\big( \gamma_h \ne 1 \big)\, \frac{ C(a_h,b_h) }{ \int_{\mathcal{A}_h} \mathcal{G}(\gamma;\, a_h,b_h)\, d\gamma }\, \gamma_h^{ \widetilde{a}_h - 1 }\, \exp\left\{ -\widetilde{b}_h \gamma_h \right\} \\[2ex]
-&= p_h\, \ind\big( \gamma_h = 1 \big)\, \exp\left\{ -(\widetilde{b}_h - b_h) \right\} \,+~ (1 - p_h)\, \ind\big( \gamma_h \ne 1 \big) \\
-& \hspace{30mm} \times~ \frac{ C(a_h,b_h) \int_{\mathcal{A}_h} \mathcal{G}(\gamma;\, \widetilde{a}_h, \widetilde{b}_h)\, d\gamma }{ C(\widetilde{a}_h, \widetilde{b}_h) \int_{\mathcal{A}_h} \mathcal{G}(\gamma;\, a_h, b_h)\, d\gamma }\, \frac{ C( \widetilde{a}_h, \widetilde{b}_h) }{ \int_{\mathcal{A}_h} \mathcal{G}(\gamma;\, \widetilde{a}_h, \widetilde{b}_h)\, d\gamma } \gamma_h^{ \widetilde{a}_h - 1 }\, \exp\left\{ -\widetilde{b}_h \gamma_h \right\} \\[2ex]
-&= p_h\, \ind\big( \gamma_h = 1 \big)\, \exp\left\{ -(\widetilde{b}_h - b_h) \right\} \,+~ (1 - p_h)\, \ind\big( \gamma_h \ne 1 \big)\, \\
-& \hspace{70mm} \times~ \frac{ C(a_h,b_h) \int_{\mathcal{A}_h} \mathcal{G}(\gamma;\, \widetilde{a}_h, \widetilde{b}_h)\, d\gamma }{ C(\widetilde{a}_h, \widetilde{b}_h) \int_{\mathcal{A}_h} \mathcal{G}(\gamma;\, a_h, b_h)\, d\gamma }\, \mathcal{G}_{\mathcal{A}_h} (\gamma;\, \widetilde{a}_h, \widetilde{b}_h) \\[2ex]
-&= d_1 \ind\big( \gamma_h = 1 \big) ~+~ d_2 \ind\big( \gamma_h \ne 1 \big)\, \mathcal{G}_{\mathcal{A}_h} (\gamma;\, \widetilde{a}_h, \widetilde{b}_h) \\[2ex]
-&\propto \frac{ d_1 }{ d_1 + d_2 } \ind\big( \gamma_h = 1 \big) ~+~ \frac{ d_2 }{ d_1 + d_2 } \ind\big( \gamma_h \ne 1 \big)\, \mathcal{G}_{\mathcal{A}_h} (\gamma;\, \widetilde{a}_h, \widetilde{b}_h) \\[2ex]
-&= \widetilde{p}_h \ind\big( \gamma_h = 1 \big) ~+~ (1 - \widetilde{p}_h)\, \ind\big( \gamma_h \ne 1 \big)\, \mathcal{G}_{\mathcal{A}_h} (\gamma;\, \widetilde{a}_h, \widetilde{b}_h) 
-\end{align*} 
+\end{align*}
 
 
 
@@ -571,7 +491,7 @@ which is the distribution function of $X$ truncated to $(a,b)$.  Thus by choosin
 \item \textbf{Sampling from a truncated Poisson distribution}
 
 Let $X$ be a random variable with support $\{x_1, x_2, \dots\}$ where $x_i < x_j$ for all $i < j$.  Let $F_X$ denote the distribution function of $X$, and let $G_X{:}~ [0,1) \mapsto \{x_1,x_2,\dots\}$ be a pseudo-inverse of $F_X$ defined by
-\[ G_X(p) = \max\Big\{ x_{i}{:}~ F_X(x_i) < p \Big\} \]
+\[ G_X(p) = \min\Big\{ x_{i}{:}~ F_X(x_i) < p \Big\} \]
 Next, let $j_1, j_2, k \in \mathbb{N}$ with $j_1 < j_2$ (note that this implies that $x_{j_1} < x_{j_2}$).  Define $U(d_1,d_2)$ to be a uniform random variable with support on $(d_1,d_2)$, then
 \begin{align*} \MoveEqLeft
 \prob \bigg\{ G_X\Big( U\left( F_X(x_{j_1-1}), F_X(x_{j_2}) \right) \Big) = x_k \bigg\} \\[1ex]
