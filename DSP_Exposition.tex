@@ -496,7 +496,7 @@ Then
 \displaystyle \frac{ F_X(v) - F_X(a) }{ F_X(b) - F_X(a) }, & & F_X(a) < v < F_X(b) \\[2ex]
 1, & & F_X(b) \leq v
 \end{array} \right. \end{align*}
-which is the distribution function of $X$ truncated to $(a,b)$.  Thus by choosing $F_X$ to be the distribution function of some desired gamma distribution, we may sample from the truncated gamma distribution by sampling $u = U\big( F_X(a), F_X(b) \big)$ and then calculating $F_X^{-1}(u)$. 
+which is the distribution function of $X$ truncated to $(a,b)$.  Thus by choosing $F_X$ to be the distribution function of some desired gamma distribution, we may sample from the truncated gamma distribution by sampling $u \sim U\big( F_X(a), F_X(b) \big)$ and then calculating $F_X^{-1}(u)$. 
 
 
 
@@ -506,26 +506,122 @@ which is the distribution function of $X$ truncated to $(a,b)$.  Thus by choosin
 \item \textbf{Sampling from a truncated Poisson distribution}
 
 Let $X$ be a random variable with support $\{x_1, x_2, \dots\}$ where $x_i < x_j$ for all $i < j$.  Let $F_X$ denote the distribution function of $X$, and let $G_X{:}~ (0,1) \mapsto \{x_1,x_2,\dots\}$ be a pseudo-inverse of $F_X$ defined by
-\[ G_X(p) = \min\Big\{ x_{i}{:}~ F_X(x_i) \geq p \Big\} \]
-Next, let $j_1, j_2, k \in \mathbb{N}$ with $j_1 < j_2$ (note that this implies that $x_{j_1} < x_{j_2}$).  Define $U(d_1,d_2)$ to be a uniform random variable with support on $(d_1,d_2)$, then
+\[ G_X(p) = \min\Big\{ x_{i} \in \{x_1,x_2,\dots\}{:}~ F_X(x_i) \geq p \Big\} \]
+Next, let $j_1, j_2, k \in \mathbb{N}$ with $j_1 < j_2$.  Note that this implies that $F_X(x_{j_1}) < F_X(x_{j_2})$ if we assume $\prob(X = x_i) > 0$ for all $i \in \mathbb{N}$.  Define $U(d_1,d_2)$ to be a uniform random variable with support on $(d_1,d_2)$, then
 \begin{align*} \MoveEqLeft
 \prob \bigg\{ G_X\Big( U\left( F_X(x_{j_1-1}), F_X(x_{j_2}) \right) \Big) = x_k \bigg\} \\[1ex]
 &= \prob \bigg\{ U\left( F_X(x_{j_1-1}), F_X(x_{j_2}) \right) \in \Big( F_X(x_{k-1}),\, F_X(x_k) \Big) \bigg\} \\[1ex]
 &= \ind\left(x_{j_1} \leq x_{k},\, x_{k} \leq x_{j_2}\right) \int_{F_X(x_{k-1})}^{F_X(x_k)} \frac{ 1 }{ F_X(x_{j_2}) - F_X(x_{j_1-1}) }\, dy \\[1ex]
 &= \ind\left(x_{j_1} \leq x_{k},\, x_{k} \leq x_{j_2}\right)\, \frac{ F_X(x_k) - F_X(x_{k-1}) }{ F_X(x_{j_2}) - F_X(x_{j_1-1}) } \\[1ex]
-&= \ind\left(x_{j_1} \leq x_{k},\, x_{k} \leq x_{j_2}\right)\, \frac{ \prob(X = k) }{ F_X(x_{j_2}) - F_X(x_{j_1-1}) }
+&= \ind\left(x_{j_1} \leq x_{k},\, x_{k} \leq x_{j_2}\right)\, \frac{ \prob(X = x_k) }{ F_X(x_{j_2}) - F_X(x_{j_1-1}) }
 \end{align*}
-which is the probability mass function of $X$ truncated to $\{x_{j_1},\dots, x_{j_2}\}$.  Notice that we may replace $F_X(x_{j_2})$ with 1 throughout to obtain the pmf of $X$ truncated to $\{x_{j_1}, x_{j_1 + 1}, \dots\}$.  Thus by choosing $F_X$ to be the distribution of a Poisson distribution with mean $\lambda$, we may sample from the Poisson distribution truncated to be greater than or equal to 1 by sampling $u = U\big( F_X(0),\, 1\big) = U\big( e^{-\lambda}, 1 \big)$ and then calculating $G_X(u)$.
-
-
-
-
-
-\item \textbf{Calculating } $\displaystyle \boldsymbol{\frac{d_1}{d_1 + d_2}}$
-
-\item \textbf{Sampling from acceptance ratio $\boldsymbol{r}$}
+which is the probability mass function of $X$ truncated to $\{x_{j_1},\dots, x_{j_2}\}$.  Notice that we may replace $F_X(x_{j_2})$ with 1 throughout to obtain the pmf of $X$ truncated to $\{x_{j_1}, x_{j_1 + 1}, \dots\}$.  Thus by choosing $F_X$ to be the distribution of a Poisson distribution with mean $\lambda$, we may sample from the Poisson distribution truncated to be greater than or equal to 1 by sampling $u \sim U\big( F_X(0),\, 1\big) \stackrel{d}{=} U\big( e^{-\lambda}, 1 \big)$ and then calculating $G_X(u)$.
 
 \end{enumerate}
+
+
+
+
+
+
+%===============================================================================
+
+\section{Extending the algorithm to continuous predictors}
+
+Suppose for ease of exposition that the model has a single continuous variable - the extension to multiple continuous variables is straightforward.  Let $\alpha_{ijk}$ denote the value for the continuous variable for the $(i,j,k)^{\text{th}}$ day, and let $\theta$ be the exponentiated value of the corresponding coefficient.  Then we can express the model as
+\[ \prob\Big( Y_{ij} = 1 \barM \vec{\beta}, \theta, \vec{\xi}, \text{data} \Big) = 1 - \prod_{k=1}^K\, (1 - \lambda_{ijk})^{X_{ijk}} \] \\[-2ex]
+where
+\[ \lambda_{ijk} = 1 - \exp\left\{ -\xi_i \exp\left( \vec{u}_{ijk}^\prime \vec{\beta} + \alpha_{ijk} \log(\theta) \right) \right\} \]
+When a predictor variable is not categorical, then we do not have a closed-form expression for the full conditional posterior distribution of the corresonding coefficient.  To express the model in a form that is more amenable to sampling via the Metropolis-Hastings algorithm, we cast the prior distribution of $\theta$ as a mixture distribution by defining
+\[ \begin{array}{l}
+\theta \,|\, (M = 1) = 1 \\[1ex]
+\theta \,|\, (M = 0) \sim \mathcal{G}_{\!\mathcal{A}} (a, b) \\[1ex]
+M \sim \text{Bern}\, (p) \\[1ex]
+\end{array} \]
+and we assume that $(\theta,M) \perp \vec{\gamma}$.  Then we observe that
+\begin{align*} \MoveEqLeft
+\pi\, \Big( M \barM \vec{Y}, \vec{W}, \vec{\gamma}, \theta, \vec{\xi}, \phi, \text{data} \Big) \\[1ex]
+&\propto \pi\, \Big( \vec{Y} \barM \vec{W}, M, \vec{\gamma}, \theta, \vec{\xi}, \phi, \text{data} \Big)~ 
+\pi\, \Big( \vec{W} \barM M, \vec{\gamma}, \theta, \vec{\xi}, \vec{\phi}, \text{data} \Big) \\
+& \hspace{10mm} \times~ \pi\, \Big( \vec{\gamma} \barM M, \theta, \vec{\xi}, \phi, \text{data} \Big)~
+\pi\, \Big( \theta \barM M, \vec{\xi}, \phi, \text{data} \Big)
+\pi\, \Big( M \barM \vec{\xi}, \phi, \text{data} \Big)~
+\pi\, \Big( \vec{\xi}, \phi \barM \text{data} \Big) \\[1ex]
+&= \pi\,\big( \vec{Y} \barS \vec{W} \big)~ \pi\,\Big( \vec{W} \barM \vec{\gamma}, \theta, \vec{\xi}, \text{data} \Big)~ \pi\,\big( \vec{\gamma} \big)~ \pi\,\big( \theta \barS M \big)~ \pi\,\big(M\big)~ \pi\, \big( \vec{\xi}, \phi \big) \\[1ex]
+&\propto \pi\,(M \barS \theta) \\[1ex]
+&= \ind(\theta = 1)\, M + \ind\,(\theta \ne 1)\, (1 - M)
+\end{align*}
+% \begin{align*} & \pi\,(\vec{\gamma} \barS \vec{M}) = \prod_{h=1}^q \pi\,(\gamma_h \barS M_h) \\
+% & \pi\,(\vec{M}) = \prod_{h=1}^q \pi\,(M_h)
+% \end{align*}
+% where $\vec{M} = (M_1,\dots,M_q)$.  Further let $\vec{M}_{(-h)}$ denote $\vec{M}$ with the $h^{\text{th}}$ element removed, 
+From this we see that $M=0$ and $M=1$ are both absorbing states and we need to proceed with a different tack.  We adapt the data augmentation approach proposed by Carlin and Chib (1995) to suit our needs.  Define
+\[ \begin{array}{l}
+\theta_{1} \barS (M = 1) = 1 \\[1ex]
+\theta_{0} \barS (M = 0) \sim \mathcal{G}_{\!\mathcal{A}} (a, b) \\[1ex]
+\end{array} \]
+and let
+\[ \prob\Big( Y_{ij} = 1 \barM M, \vec{\beta}, \theta_0, \theta_1, \vec{\xi}, \text{data} \Big)
+= 1 - \prod_{k=1}^K\, (1 - \lambda_{ijk})^{X_{ijk}} \] \\[-2ex]
+where
+\[ \lambda_{ijk} =
+\left\{ \begin{array}{lll}
+1 - \exp\left\{ -\xi_i \exp\left( \vec{u}_{ijk}^\prime \vec{\beta} + \alpha_{ijk} \log(\theta_0) \right) \right\}, & & M=0 \\[3ex]
+1 - \exp\left\{ -\xi_i \exp\left( \vec{u}_{ijk}^\prime \vec{\beta} + \alpha_{ijk} \log(\theta_1) \right) \right\}, & & M=1 \end{array} \right. \]
+Of course $M=1$ corresponds to $\alpha_{ijk}$ being dropped from the model since $\log(\theta_1) = 0$.  We also see that $Y$ is independent of $\theta_{k\ne j}$ given that $M=j,~ j=0,1$.  Usually here we would assume that $(\theta_0 \barS M) \perp (\theta_1 \barS M)$, but in this case it is automatic.  In order to complete the prior specification it remains to specify the linking distributions $\theta_1 \barS (M=0)$ and $\theta_0 \barS (M=1)$, but we will defer this for a moment. Instead, we observe that
+\begin{align*} \MoveEqLeft
+\pi\,\Big( \vec{Y}, \vec{W}, M=j, \vec{\gamma}, \theta_0, \theta_1, \vec{\xi}, \phi \barM \text{data} \Big) \\[1ex]
+&= \pi\,\Big( \vec{Y} \barM \vec{W}, M=j, \theta_0, \theta_1, \vec{\xi}, \phi, \text{data} \Big) \\
+&\hspace{10mm} \times~ \pi\,\Big( \vec{W} \barM M=j, \theta_0, \theta_1, \vec{\xi}, \phi, \text{data} \Big) \\
+&\hspace{10mm} \times~ \pi\,\Big( \theta_0, \theta_1 \barM M=j, \vec{\xi}, \phi, \text{data} \big) \\
+&\hspace{10mm} \times~ \prob\Big( M=j \barM \vec{\xi}, \phi, \text{data} \Big) \\
+&\hspace{10mm} \times~ \pi\,\Big( \vec{\xi}, \phi \barM \text{data} \Big) \\
+&= \pi\,\big( \vec{Y} \barS \vec{W} \big)~ \pi\,\Big( \vec{W} \barM M=j, \vec{\gamma}, \theta_j, \vec{\xi}, \text{data} \Big)~ \left[ \prod_{k=0}^1 \pi\,\big( \theta_k \barS M=j \big) \right]\, \prob\big(M=j\big)~ \pi\,\big( \vec{\xi},\phi \big) 
+\end{align*}
+Now we consider the auxiliary variables model.  We have
+\begin{align*} \MoveEqLeft
+\pi\,\Big( \theta_j \barM \vec{Y}, \vec{W}, M=j, \vec{\gamma}, \theta_{k\ne j}, \vec{\xi}, \phi, \text{data} \Big) \\[1ex]
+&= \frac{ \pi\,\Big( \vec{Y}, \vec{W}, M=j, \vec{\gamma}, \theta_0, \theta_1, \vec{\xi}, \phi \barM \text{data} \Big) }{ \displaystyle\int \!\!\pi\,\Big( \vec{Y}, \vec{W}, M=j, \vec{\gamma}, \theta_0, \theta_1, \vec{\xi}, \phi \barM \text{data} \Big)~ d\theta_j } \\[1ex]
+&= \frac{ \pi\,\big( \vec{Y} \barS \vec{W} \big)~ \pi\,\Big( \vec{W} \barM M=j, \vec{\gamma}, \theta_j, \vec{\xi}, \text{data} \Big)~ \left[ \prod_{k=0}^1 \pi\,\big( \theta_k \barS M=j \big) \right]\, \prob\big(M=j\big)~ \pi\,\big( \vec{\xi},\phi \big)  }{ {\displaystyle\int\!\!} \pi\,\big( \vec{Y} \barS \vec{W} \big)~ \pi\,\Big( \vec{W} \barM M=j, \vec{\gamma}, \theta_j, \vec{\xi}, \text{data} \Big)~ \left[ \prod_{k=0}^1 \pi\,\big( \theta_k \barS M=j \big) \right]\, \prob\big(M=j\big)~ \pi\,\big( \vec{\xi},\phi \big)~ d\theta_j } \\[1ex]
+&= \frac{ \pi\,\Big( \vec{W} \barM M=j, \vec{\gamma}, \theta_j, \vec{\xi}, \text{data} \Big)~ \pi\,\big( \theta_j \barS M=j \big) }{ {\displaystyle\int\!\!} \pi\,\Big( \vec{W} \barM M=j, \vec{\gamma}, \theta_j, \vec{\xi}, \text{data} \Big)~ \pi\,\big( \theta_j \barS M=j \big)~ d\theta_j } \\[1ex]
+&= \pi\,\Big( \theta_j \barM \vec{W}, M=j, \vec{\gamma}, \theta_j, \vec{\xi}, \text{data} \Big)
+\end{align*}
+so we see that the full conditional distribution for $\theta_j,~ j=0,1$ remains unchanged under the auxiliary variables model.  Next, for $k\ne j$,
+\begin{align*} \MoveEqLeft
+\pi\,\Big( \theta_k \barM \vec{Y}, \vec{W}, M=j, \vec{\gamma}, \theta_{k\ne j}, \vec{\xi}, \phi, \text{data} \Big) \\[1ex]
+&= \frac{ \pi\,\Big( \vec{Y}, \vec{W}, M=j, \vec{\gamma}, \theta_0, \theta_1, \vec{\xi}, \phi \barM \text{data} \Big) }{ \displaystyle\int \!\!\pi\,\Big( \vec{Y}, \vec{W}, M=j, \vec{\gamma}, \theta_0, \theta_1, \vec{\xi}, \phi \barM \text{data} \Big)~ d\theta_k } \\[1ex]
+&= \frac{ \pi\,\big( \vec{Y} \barS \vec{W} \big)~ \pi\,\Big( \vec{W} \barM M=j, \vec{\gamma}, \theta_j, \vec{\xi}, \text{data} \Big)~ \left[ \prod_{i=0}^1 \pi\,\big( \theta_i \barS M=j \big) \right]\, \prob\big(M=j\big)~ \pi\,\big( \vec{\xi},\phi \big)  }{ {\displaystyle\int\!} \pi\,\big( \vec{Y} \barS \vec{W} \big)~ \pi\,\Big( \vec{W} \barM M=j, \vec{\gamma}, \theta_j, \vec{\xi}, \text{data} \Big)~ \left[ \prod_{i=0}^1 \pi\,\big( \theta_i \barS M=j \big) \right]\, \prob\big(M=j\big)~ \pi\,\big( \vec{\xi},\phi \big)~ d\theta_k } \\[1ex]
+&= \frac{ \pi\,\big( \theta_k \barS M=j \big) }{ {\displaystyle\int\!\!} \pi\,\big( \theta_k \barS M=j \big)\, d\theta_k } \\[1ex]
+&= \pi\,\big( \theta_k \barS M=j \big)
+\end{align*}
+Thus the full conditional distribution for $\theta_{k\ne j}$ when $M=j$ is just the linking density.  It is easy to verify that the full conditional distributions of $\vec{\gamma},\vec{\xi}$, and $\phi$ remain unchanged under the auxiliary variables model.  Next we observe that
+\begin{align*} \MoveEqLeft
+\prob \left( M=1 \barM \vec{Y}, \vec{W}, \vec{\gamma}, \theta_0, \theta_1, \vec{\xi}, \phi, \text{data} \right) \\[1ex]
+&= \frac{ \pi\,\Big( \vec{Y}, \vec{W}, M=1, \vec{\gamma}, \theta_0, \theta_1, \vec{\xi}, \phi \barM \text{data} \Big) }{ \sum_{j=0}^1 \pi\,\Big( \vec{Y}, \vec{W}, M=j, \vec{\gamma}, \theta_0, \theta_1, \vec{\xi}, \phi \barM \text{data} \Big) } \\[1ex]
+&= \frac{ \pi\,\Big( \vec{W} \barM M=1, \vec{\gamma}, \theta_1, \vec{\xi}, \text{data} \Big)~ \left[ \prod_{k=0}^1 \pi\,\big( \theta_k \barS M=1 \big) \right]\, \prob\big(M=1\big) }{ 
+\sum_{j=0}^1 \pi\,\Big( \vec{W} \barM M=j, \vec{\gamma}, \theta_j, \vec{\xi}, \text{data} \Big)~ \left[ \prod_{k=0}^1 \pi\,\big( \theta_k \barS M=j \big) \right]\, \prob\big(M=j\big) }
+\end{align*}
+In light this result, we now choose the prior distributions for $\theta_1 \barS (M=0)$ and $\theta_0 \barS (M=1)$.  Clearly we should specify $\theta_1 \barS (M=0) = 1$.  Furthermore, out of convenience, we propose specifying $\theta_0 \barS (M=1) \stackrel{d}{=} \theta_0 \barS (M=0)$.  Under this specification, we obtain that
+\[ \prob \left( M=1 \barM \vec{Y}, \vec{W}, \vec{\gamma}, \theta_0, \theta_1, \vec{\xi}, \phi, \text{data} \right) = \frac{ \pi\,\Big( \vec{W} \barM M=1, \vec{\gamma}, \theta_1, \vec{\xi}, \text{data} \Big)~  \prob\big(M=1\big) }{ 
+\sum_{j=0}^1 \pi\,\Big( \vec{W} \barM M=j, \vec{\gamma}, \theta_j, \vec{\xi}, \text{data} \Big)~ \prob\big(M=j\big) } \]
+In conclusion, we may incorporate a continuous covariate into the MCMC sampler by using the data augmentation approach detailed above.  When $M=0$ then $\theta_0$ is updated via a Metropolis step.
+
+
+
+% for $h=1,\dots,q$.  Let 
+% \begin{align*}
+% & \vec{\theta} = (\theta_{01},\dots,\theta_{01},\theta_{11},\dots,\theta_{1q}) \\[1ex]
+% & \vec{M} = (M_1,\dots,M_q) \\[1ex]
+% & \vec{\theta}_{\!\vec{M}} = (\theta_{M_1,1},\dots,\theta_{M_q,q})
+% \end{align*}
+% 
+% and
+% \[ \pi(\vec{\theta} \barS \vec{M}) = \prod_{\ell=1}^q \prod_{i=1}^1 \pi(\theta_{i\ell} | M_{\ell}) \]
+% Thus $\vec{Y}$ is independent of $\big\{ \theta_{ih}{:}~ M_{h} \ne i,~ h=1,\dots,q \big\}$ given $\vec{M}$, and $\theta_{01},\dots,\theta_{01},\theta_{11},\dots,\theta_{1q}$ are jointly independent given $\vec{M}$.  To complete the model specification, 
+% \begin{align*}
+% \prob\Big( Y_{ij} = 1 \barM \vec{M}, \vec{\theta}, \xi_i, \text{data} \Big) &= 1 - \prod_{k=1}^K\, (1 - \lambda_{ijk})^{X_{ijk}} \nonumber \\
+% \lambda_{ijk} &= 1 - \exp\left\{ -\xi_i \exp\left( \sum_{\ell=1}^q u_{ijk\ell} \log\Big[ \theta_{\ell}(1 - M_\ell) + M_\ell \Big] \right) \right\}
+% \end{align*}
 
 
 
